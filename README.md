@@ -16,6 +16,10 @@
   <a href="https://kiptecnologia.gumroad.com/l/5-in-one"><strong>📦 5-in-1 Complete Bundle ($99)</strong></a>
 </p>
 
+<p align="center">
+  <img src="public/demo_preview.gif" alt="LinkCraft Pro v2.0 Demo Preview" width="100%" style="border-radius: 8px; border: 1px solid #e2e8f0;" />
+</p>
+
 </div>
 
 ---
