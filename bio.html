@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kip Tecnologia | Link-in-Bio Oficial</title>
+  
+  <meta name="description" content="Página pública de links oficiais da Kip Tecnologia gerada com LinkCraft Pro v2.0.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .custom-scale {
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+    }
+    .custom-scale:hover {
+      transform: translateY(-2px) scale(1.01);
+    }
+  </style>
+</head>
+<body id="bio-body" class="min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 transition-colors duration-300 bg-slate-50 text-slate-800">
+
+  <!-- TOP FLOATING ADMIN BAR -->
+  <header class="w-full max-w-lg mb-6 flex items-center justify-between bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm text-xs">
+    <div class="flex items-center space-x-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+      <span class="font-bold text-slate-700 dark:text-slate-300">Página Pública Ao Vivo</span>
+      <span class="font-mono text-slate-400 text-[10px]" id="header-slug">kip.to/bio/kiptecnologia</span>
+    </div>
+    <div class="flex items-center space-x-2">
+      <a href="index.html" class="px-3 py-1 rounded-lg bg-sky-600 text-white font-bold hover:bg-sky-700 transition shadow-sm flex items-center space-x-1">
+        <i class="fa-solid fa-arrow-left text-[10px]"></i>
+        <span>Voltar ao Painel</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN BIO PROFILE CONTAINER -->
+  <main class="w-full max-w-md flex flex-col items-center text-center my-auto">
+    
+    <!-- Avatar with Verified Ring -->
+    <div class="relative mb-3">
+      <div id="bio-avatar" class="w-24 h-24 rounded-full bg-gradient-to-tr from-sky-600 via-blue-600 to-indigo-700 flex items-center justify-center text-white text-3xl font-extrabold shadow-xl border-4 border-white dark:border-slate-800">
+        KT
+      </div>
+      <div class="absolute bottom-0 right-0 bg-sky-500 text-white w-7 h-7 rounded-full flex items-center justify-center border-2 border-white dark:border-slate-800 shadow">
+        <i class="fa-solid fa-check text-xs"></i>
+      </div>
+    </div>
+
+    <!-- Display Name & Handle -->
+    <h1 id="bio-name" class="text-xl font-extrabold tracking-tight flex items-center justify-center space-x-1.5">
+      <span>Kip Tecnologia</span>
+    </h1>
+    <p id="bio-handle" class="text-xs font-mono font-semibold text-slate-400 mt-0.5">@kiptecnologia</p>
+
+    <!-- Bio Description / Headline -->
+    <p id="bio-headline" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-2 max-w-xs leading-relaxed">
+      Fábrica de Micro-SaaS B2B & Ferramentas Digitais de Alta Conversão.
+    </p>
+
+    <!-- Social Channels Row -->
+    <div id="bio-socials" class="flex items-center justify-center space-x-4 my-5 text-lg text-slate-600 dark:text-slate-300">
+      <a id="soc-x" href="https://x.com" target="_blank" class="hover:text-sky-500 transition"><i class="fa-brands fa-x-twitter"></i></a>
+      <a id="soc-github" href="https://github.com/KipTecnologia" target="_blank" class="hover:text-slate-900 dark:hover:text-white transition"><i class="fa-brands fa-github"></i></a>
+      <a id="soc-youtube" href="https://youtube.com" target="_blank" class="hover:text-red-500 transition"><i class="fa-brands fa-youtube"></i></a>
+      <a id="soc-linkedin" href="https://linkedin.com" target="_blank" class="hover:text-blue-600 transition"><i class="fa-brands fa-linkedin"></i></a>
+      <a id="soc-whatsapp" href="https://wa.me/" target="_blank" class="hover:text-emerald-500 transition"><i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+
+    <!-- Clickable Bio Links List -->
+    <div id="bio-links-container" class="w-full space-y-3">
+      <!-- Dynamically Rendered by JS -->
+    </div>
+
+    <!-- Verified Safe Link Badge -->
+    <div class="mt-8 flex items-center space-x-1.5 text-[11px] text-slate-400 font-medium">
+      <i class="fa-solid fa-shield-check text-emerald-500"></i>
+      <span>Página verificada e protegida com criptografia SSL</span>
+    </div>
+
+  </main>
+
+  <!-- FOOTER BRANDING -->
+  <footer class="w-full text-center py-6 mt-8">
+    <a href="https://kiptecnologia.gumroad.com/l/linkcraft-pro" target="_blank" class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-slate-200/60 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 text-xs font-semibold transition">
+      <i class="fa-solid fa-bolt text-sky-500 text-[11px]"></i>
+      <span>Crie sua página no <strong>LinkCraft Pro</strong></span>
+    </a>
+  </footer>
+
+  <script>
+    // Default Fallback Bio Data
+    const defaultBio = {
+      name: "Kip Tecnologia",
+      slug: "kiptecnologia",
+      headline: "Fábrica de Micro-SaaS B2B & Ferramentas Digitais de Alta Conversão.",
+      theme: "clean-light",
+      socials: {
+        x: "@kiptecnologia",
+        github: "KipTecnologia",
+        youtube: "@kiptecnologia",
+        linkedin: "kiptecnologia",
+        whatsapp: ""
+      },
+      buttons: [
+        { id: 1, label: "🚀 Explore Nossos Boilerplates no GitHub", url: "https://github.com/KipTecnologia" },
+        { id: 2, label: "📦 Compre o Bundle Comercial 5-em-1 ($99)", url: "https://kiptecnologia.gumroad.com/l/5-in-one" },
+        { id: 3, label: "⚡ LinkCraft Pro v2.0 Source Code ($49)", url: "https://kiptecnologia.gumroad.com/l/linkcraft-pro" },
+        { id: 4, label: "💬 Falar com Suporte Executivo no WhatsApp", url: "https://wa.me/" }
+      ]
+    };
+
+    // Load from localStorage or use default
+    function loadBioData() {
+      let data = defaultBio;
+      try {
+        const stored = localStorage.getItem('linkcraft_bio_config');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          data = { ...defaultBio, ...parsed };
+        }
+      } catch (e) {
+        console.warn('Could not read localStorage:', e);
+      }
+      return data;
+    }
+
+    function applyBioPage() {
+      const data = loadBioData();
+
+      // Text elements
+      document.getElementById('bio-name').querySelector('span').innerText = data.name;
+      document.getElementById('bio-handle').innerText = `@${data.slug}`;
+      document.getElementById('header-slug').innerText = `kip.to/bio/${data.slug}`;
+      document.getElementById('bio-headline').innerText = data.headline;
+
+      // Theme styling
+      const body = document.getElementById('bio-body');
+      const theme = data.theme || 'clean-light';
+
+      if (theme === 'clean-light') {
+        body.className = 'min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 transition-colors duration-300 bg-slate-50 text-slate-800';
+      } else if (theme === 'carbon-slate') {
+        body.className = 'min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 transition-colors duration-300 bg-[#0B0F19] text-white';
+      } else if (theme === 'sunset-violet') {
+        body.className = 'min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 transition-colors duration-300 bg-gradient-to-b from-[#1E1135] via-[#2E1065] to-[#4C1D95] text-white';
+      } else if (theme === 'emerald-minimal') {
+        body.className = 'min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 transition-colors duration-300 bg-[#022c22] text-emerald-50';
+      }
+
+      // Render buttons
+      const container = document.getElementById('bio-links-container');
+      container.innerHTML = '';
+
+      (data.buttons || []).forEach(b => {
+        const a = document.createElement('a');
+        a.href = b.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+
+        let btnClass = 'custom-scale block w-full py-3.5 px-4 rounded-2xl text-xs sm:text-sm font-bold shadow-sm transition flex items-center justify-between ';
+        if (theme === 'clean-light') {
+          btnClass += 'bg-white hover:bg-slate-50 text-slate-800 border border-slate-200/80 shadow-slate-200/50';
+        } else if (theme === 'carbon-slate') {
+          btnClass += 'bg-slate-800/90 hover:bg-slate-700 text-white border border-slate-700/80 shadow-black/20';
+        } else if (theme === 'sunset-violet') {
+          btnClass += 'bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-purple-300/30 shadow-purple-950/30';
+        } else if (theme === 'emerald-minimal') {
+          btnClass += 'bg-emerald-900/90 hover:bg-emerald-800 text-emerald-100 border border-emerald-700/80 shadow-emerald-950/30';
+        }
+
+        a.className = btnClass;
+        a.innerHTML = `
+          <span class="truncate pr-2">${b.label}</span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[11px] opacity-60 flex-shrink-0"></i>
+        `;
+
+        a.onclick = () => {
+          // Track click locally
+          try {
+            let clicks = JSON.parse(localStorage.getItem('linkcraft_bio_clicks') || '{}');
+            clicks[b.id] = (clicks[b.id] || 0) + 1;
+            localStorage.setItem('linkcraft_bio_clicks', JSON.stringify(clicks));
+          } catch (e) {}
+        };
+
+        container.appendChild(a);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', applyBioPage);
+  </script>
+</body>
+</html>

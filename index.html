@@ -1,0 +1,2510 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkCraft Pro v2.0 - Enterprise URL Management, Link-in-Bio & Telemetry Boilerplate | Kip Tecnologia</title>
+  
+  <!-- SEO & Social Meta -->
+  <meta name="description" content="Production-ready Enterprise URL Shortener, Branded Link Management, Link-in-Bio Profile Builder & Click Telemetry Platform. Built with Next.js 15, Mantine/Radix design tokens, Prisma ORM, RBAC, and Stripe SaaS billing.">
+  <meta property="og:title" content="LinkCraft Pro v2.0 - Enterprise URL Management & Link-in-Bio Platform">
+  <meta property="og:description" content="Clean, data-dense enterprise link platform in Next.js 15. High-converting Clean Light & Carbon Slate design with RBAC and Stripe.">
+  <meta property="og:image" content="https://kiptecnologia.gumroad.com/l/linkcraft-pro">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Inter & JetBrains Mono Fonts & Tailwind CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- QRCode.js library for real dynamic QR code rendering -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <script>
+    if (typeof tailwind !== 'undefined') {
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              brand: {
+                50: '#F0F7FF',
+                100: '#E0EFFF',
+                500: '#0284C7',
+                600: '#0369A1',
+                700: '#075985',
+              }
+            }
+          }
+        }
+      };
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+    .dark .custom-scroll::-webkit-scrollbar-thumb {
+      background: #334155;
+    }
+    .badge-dot::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+    .badge-active::before { background-color: #10B981; }
+    .badge-paused::before { background-color: #F59E0B; }
+    .badge-expired::before { background-color: #EF4444; }
+
+    /* Phone Mockup Frame */
+    .phone-mockup {
+      width: 320px;
+      height: 620px;
+      border: 10px solid #1E293B;
+      border-radius: 40px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+    .phone-notch {
+      width: 130px;
+      height: 22px;
+      background: #1E293B;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+      z-index: 20;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-[#0B0F19] dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center space-x-2.5 px-4 py-3 rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-2xl border border-slate-700/50 text-xs font-semibold">
+    <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 dark:text-emerald-600 text-sm"></i>
+    <span id="toast-msg">Action completed successfully</span>
+  </div>
+
+  <!-- COMMERCIAL BUYER HEADER CALLOUT BANNER -->
+  <div class="bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-700 text-white px-4 py-2 text-xs font-medium flex items-center justify-between border-b border-sky-500/30">
+    <div class="flex items-center space-x-2 truncate">
+      <span class="bg-white/20 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase" data-i18n="banner_tag">PRO COMMERCIAL</span>
+      <span class="truncate" data-i18n="banner_title">Ready-to-deploy Next.js 15 App Router Micro-SaaS. Full Source Code, Prisma ORM, Stripe Billing & RBAC.</span>
+    </div>
+    <div class="flex items-center space-x-3 flex-shrink-0">
+      <a href="https://kiptecnologia.gumroad.com/l/linkcraft-pro" target="_blank" class="bg-white text-blue-700 hover:bg-sky-50 px-3 py-1 rounded-md font-bold transition shadow-sm flex items-center space-x-1.5">
+        <i class="fa-solid fa-bag-shopping text-[11px]"></i>
+        <span data-i18n="banner_btn_single">Buy LinkCraft Pro ($49)</span>
+      </a>
+      <a href="https://kiptecnologia.gumroad.com/l/5-in-one" target="_blank" class="bg-amber-400 text-slate-900 hover:bg-amber-300 px-3 py-1 rounded-md font-extrabold transition shadow-sm flex items-center space-x-1.5">
+        <i class="fa-solid fa-layer-group text-[11px]"></i>
+        <span data-i18n="banner_btn_bundle">5-in-1 Bundle ($99)</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- TOP APP NAVIGATION BAR -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-[#0E1322]/95 backdrop-blur border-b border-slate-200 dark:border-slate-800/80 px-4 lg:px-6 py-2.5 flex items-center justify-between">
+    <!-- Brand & Workspace Selector -->
+    <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-2.5 cursor-pointer" onclick="switchTab('overview')">
+        <div class="w-8 h-8 rounded-lg bg-sky-600 flex items-center justify-center text-white font-bold shadow-sm shadow-sky-500/20">
+          <i class="fa-solid fa-link text-sm"></i>
+        </div>
+        <div>
+          <span class="font-extrabold text-slate-900 dark:text-white text-base tracking-tight">LinkCraft</span>
+          <span class="text-xs px-1.5 py-0.5 ml-1 font-semibold rounded bg-sky-50 text-sky-700 dark:bg-sky-950/80 dark:text-sky-300 border border-sky-200 dark:border-sky-800/50">PRO v2.0</span>
+        </div>
+      </div>
+
+      <div class="hidden sm:block h-5 w-px bg-slate-200 dark:bg-slate-700"></div>
+
+      <!-- Tenant Workspace Switcher -->
+      <div class="relative hidden sm:block">
+        <button id="workspace-btn" onclick="toggleWorkspaceDropdown()" class="flex items-center space-x-2 text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span id="current-workspace-name">Kip Tecnologia Global</span>
+          <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
+        </button>
+        <!-- Workspace Dropdown -->
+        <div id="workspace-dropdown" class="hidden absolute left-0 mt-1 w-56 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-1.5 z-50 text-xs">
+          <div class="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="workspaces_title">Switch Workspace</div>
+          <button onclick="changeWorkspace('Kip Tecnologia Global')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 flex items-center justify-between font-semibold">
+            <span>Kip Tecnologia Global</span>
+            <i class="fa-solid fa-check text-sky-600 text-xs"></i>
+          </button>
+          <button onclick="changeWorkspace('E-Commerce Growth Lab')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 flex items-center justify-between">
+            <span>E-Commerce Growth Lab</span>
+          </button>
+          <button onclick="changeWorkspace('Affiliate Network BR')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 flex items-center justify-between">
+            <span>Affiliate Network BR</span>
+          </button>
+          <div class="border-t border-slate-100 dark:border-slate-700 my-1"></div>
+          <button onclick="openNewWorkspaceModal()" class="w-full text-left px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-sky-600 font-semibold flex items-center space-x-1.5">
+            <i class="fa-solid fa-plus text-[10px]"></i>
+            <span data-i18n="add_workspace">+ Add New Workspace</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Search / Command Palette Bar -->
+    <button onclick="openCmdPalette()" class="hidden md:flex items-center space-x-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-800/50 text-slate-400 text-xs hover:border-slate-300 dark:hover:border-slate-600 transition w-64">
+      <i class="fa-solid fa-magnifying-glass text-xs"></i>
+      <span class="flex-1 text-left" data-i18n="cmd_search_placeholder">Search links, analytics, actions...</span>
+      <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-[10px] font-mono text-slate-600 dark:text-slate-300">⌘K</kbd>
+    </button>
+
+    <!-- Header Actions (New Link, Language, Theme, Profile) -->
+    <div class="flex items-center space-x-2.5">
+      <!-- Shorten URL Fast Action -->
+      <button onclick="openShortenModal()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm shadow-sky-500/20 flex items-center space-x-1.5 transition">
+        <i class="fa-solid fa-plus text-xs"></i>
+        <span data-i18n="btn_new_link">Create Link</span>
+      </button>
+
+      <!-- Language Toggle (Bilingual Engine) -->
+      <button id="lang-btn" onclick="toggleLanguage()" title="Switch Language (EN / PT)" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-800/60 flex items-center justify-center text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+        <span id="lang-indicator">🇧🇷 PT</span>
+      </button>
+
+      <!-- Theme Toggle (Clean Light / Carbon Slate) -->
+      <button id="theme-btn" onclick="toggleDarkMode()" title="Toggle Dark / Light Mode" class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-800/60 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+        <i id="theme-icon" class="fa-solid fa-moon text-xs"></i>
+      </button>
+
+      <!-- User Profile Dropdown -->
+      <div class="relative">
+        <button onclick="toggleProfileDropdown()" class="flex items-center space-x-2 pl-1.5 pr-2 py-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+          <div class="w-7 h-7 rounded-full bg-gradient-to-tr from-sky-600 to-indigo-600 flex items-center justify-center text-white text-xs font-bold">
+            KT
+          </div>
+          <span class="hidden xl:inline text-xs font-semibold text-slate-700 dark:text-slate-200">Henrique K.</span>
+          <i class="fa-solid fa-angle-down text-[10px] text-slate-400"></i>
+        </button>
+        <div id="profile-dropdown" class="hidden absolute right-0 mt-1 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-1.5 z-50 text-xs">
+          <div class="px-3 py-2 border-b border-slate-100 dark:border-slate-700">
+            <p class="font-bold text-slate-900 dark:text-white">Henrique K.</p>
+            <p class="text-[11px] text-slate-500 truncate">contato@kiptecnologia.com.br</p>
+          </div>
+          <button onclick="switchTab('settings')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 flex items-center space-x-2">
+            <i class="fa-solid fa-gear text-slate-400 text-xs w-4"></i>
+            <span data-i18n="menu_settings">Workspace Settings</span>
+          </button>
+          <button onclick="switchTab('billing')" class="w-full text-left px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-700/50 flex items-center space-x-2">
+            <i class="fa-solid fa-credit-card text-slate-400 text-xs w-4"></i>
+            <span data-i18n="menu_billing">Stripe Billing</span>
+          </button>
+          <div class="border-t border-slate-100 dark:border-slate-700 my-1"></div>
+          <button onclick="showToast('Session logged out simulated', 'info')" class="w-full text-left px-3 py-2 hover:bg-rose-50 text-rose-600 dark:hover:bg-rose-950/30 flex items-center space-x-2 font-semibold">
+            <i class="fa-solid fa-arrow-right-from-bracket text-xs w-4"></i>
+            <span data-i18n="menu_logout">Log Out</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS SUBHEADER -->
+  <nav class="bg-white dark:bg-[#0E1322] border-b border-slate-200 dark:border-slate-800/80 px-4 lg:px-6 flex items-center justify-between overflow-x-auto custom-scroll">
+    <div class="flex items-center space-x-1 py-1.5">
+      <!-- Tab 1: Overview & Links -->
+      <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/60 flex items-center space-x-2 transition">
+        <i class="fa-solid fa-link text-xs"></i>
+        <span data-i18n="nav_links">Links & Overview</span>
+        <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-sky-200/80 dark:bg-sky-800/80 text-sky-800 dark:text-sky-200 font-bold" id="badge-total-links">148</span>
+      </button>
+
+      <!-- Tab 2: Bio Pages -->
+      <button onclick="switchTab('bio')" id="tab-bio" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/50 flex items-center space-x-2 transition">
+        <i class="fa-solid fa-mobile-screen-button text-xs"></i>
+        <span data-i18n="nav_bio">Link-in-Bio</span>
+        <span class="px-1.5 py-0.2 rounded text-[10px] bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 font-bold">LIVE</span>
+      </button>
+
+      <!-- Tab 3: Users & Roles (RBAC) -->
+      <button onclick="switchTab('users')" id="tab-users" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/50 flex items-center space-x-2 transition">
+        <i class="fa-solid fa-users text-xs"></i>
+        <span data-i18n="nav_users">Team & RBAC</span>
+      </button>
+
+      <!-- Tab 4: Stripe Billing -->
+      <button onclick="switchTab('billing')" id="tab-billing" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/50 flex items-center space-x-2 transition">
+        <i class="fa-brands fa-stripe text-xs"></i>
+        <span data-i18n="nav_billing">Stripe Billing</span>
+      </button>
+
+      <!-- Tab 5: Audit & Security -->
+      <button onclick="switchTab('audit')" id="tab-audit" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/50 flex items-center space-x-2 transition">
+        <i class="fa-solid fa-shield-halved text-xs"></i>
+        <span data-i18n="nav_audit">Audit & Security</span>
+      </button>
+
+      <!-- Tab 6: Settings -->
+      <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/50 flex items-center space-x-2 transition">
+        <i class="fa-solid fa-sliders text-xs"></i>
+        <span data-i18n="nav_settings">Settings & API</span>
+      </button>
+    </div>
+
+    <!-- Quick Link Copy Indicator -->
+    <div class="hidden lg:flex items-center space-x-2 text-xs text-slate-500 dark:text-slate-400">
+      <span class="text-slate-400" data-i18n="custom_domain_label">Branded Domain:</span>
+      <span class="font-mono font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">kip.to</span>
+      <span class="w-2 h-2 rounded-full bg-emerald-500" title="Domain SSL Active"></span>
+    </div>
+  </nav>
+
+  <!-- MAIN VIEW CONTENT CONTAINER -->
+  <main class="flex-1 p-4 lg:p-6 max-w-7xl mx-auto w-full space-y-6">
+
+    <!-- ========================================== -->
+    <!-- VIEW 1: OVERVIEW & LINKS MANAGEMENT        -->
+    <!-- ========================================== -->
+    <div id="view-overview" class="view-content space-y-6">
+      
+      <!-- Top Executive KPIs Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Card 1: Total Links -->
+        <div class="bg-white dark:bg-[#131B2E] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
+          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-medium mb-1">
+            <span data-i18n="kpi_total_links">Active Short Links</span>
+            <div class="w-7 h-7 rounded-lg bg-sky-50 dark:bg-sky-950/80 text-sky-600 flex items-center justify-center">
+              <i class="fa-solid fa-link text-xs"></i>
+            </div>
+          </div>
+          <div class="flex items-baseline space-x-2">
+            <span class="text-2xl font-extrabold text-slate-900 dark:text-white" id="stat-links-count">148</span>
+            <span class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center">
+              <i class="fa-solid fa-arrow-trend-up mr-1 text-[10px]"></i> +12%
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1" data-i18n="kpi_links_sub">+16 new links created this week</p>
+        </div>
+
+        <!-- Card 2: Total Clicks -->
+        <div class="bg-white dark:bg-[#131B2E] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
+          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-medium mb-1">
+            <span data-i18n="kpi_total_clicks">Total Clicks Redirected</span>
+            <div class="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950/80 text-blue-600 flex items-center justify-center">
+              <i class="fa-solid fa-arrow-pointer text-xs"></i>
+            </div>
+          </div>
+          <div class="flex items-baseline space-x-2">
+            <span class="text-2xl font-extrabold text-slate-900 dark:text-white" id="stat-clicks-count">184,290</span>
+            <span class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center">
+              <i class="fa-solid fa-arrow-trend-up mr-1 text-[10px]"></i> +24.8%
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1" data-i18n="kpi_clicks_sub">Vs. 147,600 in prior 30 days</p>
+        </div>
+
+        <!-- Card 3: Unique Visitors -->
+        <div class="bg-white dark:bg-[#131B2E] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
+          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-medium mb-1">
+            <span data-i18n="kpi_unique_visitors">Unique Global Visitors</span>
+            <div class="w-7 h-7 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 flex items-center justify-center">
+              <i class="fa-solid fa-user-check text-xs"></i>
+            </div>
+          </div>
+          <div class="flex items-baseline space-x-2">
+            <span class="text-2xl font-extrabold text-slate-900 dark:text-white">96,410</span>
+            <span class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center">
+              <i class="fa-solid fa-arrow-trend-up mr-1 text-[10px]"></i> +18.4%
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1" data-i18n="kpi_visitors_sub">52.3% return audience rate</p>
+        </div>
+
+        <!-- Card 4: Avg CTR / Conversion -->
+        <div class="bg-white dark:bg-[#131B2E] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
+          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-xs font-medium mb-1">
+            <span data-i18n="kpi_avg_ctr">Average Link CTR</span>
+            <div class="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 flex items-center justify-center">
+              <i class="fa-solid fa-chart-pie text-xs"></i>
+            </div>
+          </div>
+          <div class="flex items-baseline space-x-2">
+            <span class="text-2xl font-extrabold text-slate-900 dark:text-white">4.82%</span>
+            <span class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center">
+              <i class="fa-solid fa-arrow-trend-up mr-1 text-[10px]"></i> +0.6%
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1" data-i18n="kpi_ctr_sub">Top campaign: 12.4% CTR</p>
+        </div>
+      </div>
+
+      <!-- Real-Time Interactive SVG Trajectory Chart -->
+      <div class="bg-white dark:bg-[#131B2E] p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 gap-3">
+          <div>
+            <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+              <span data-i18n="chart_title">Click Telemetry & Traffic Trajectory</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 font-bold">REALTIME</span>
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="chart_sub">Visual click distribution and conversion velocity across marketing channels</p>
+          </div>
+
+          <!-- Timeframe Selector Filters -->
+          <div class="flex items-center space-x-1 bg-slate-100 dark:bg-slate-800/80 p-1 rounded-lg">
+            <button onclick="updateChartPeriod('7D')" id="btn-period-7D" class="chart-period-btn px-2.5 py-1 text-xs font-medium rounded-md text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 transition">7D</button>
+            <button onclick="updateChartPeriod('30D')" id="btn-period-30D" class="chart-period-btn px-2.5 py-1 text-xs font-bold rounded-md bg-white dark:bg-slate-700 text-sky-600 dark:text-sky-400 shadow-sm transition">30D</button>
+            <button onclick="updateChartPeriod('90D')" id="btn-period-90D" class="chart-period-btn px-2.5 py-1 text-xs font-medium rounded-md text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 transition">90D</button>
+            <button onclick="updateChartPeriod('12M')" id="btn-period-12M" class="chart-period-btn px-2.5 py-1 text-xs font-medium rounded-md text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 transition">12M</button>
+          </div>
+        </div>
+
+        <!-- SVG Vector Chart Render -->
+        <div class="relative mt-4 h-56 w-full">
+          <svg id="click-chart-svg" class="w-full h-full overflow-visible" viewBox="0 0 900 200" preserveAspectRatio="none">
+            <!-- Grid Lines -->
+            <line x1="0" y1="40" x2="900" y2="40" stroke="currentColor" class="text-slate-100 dark:text-slate-800/60" stroke-width="1" stroke-dasharray="4"/>
+            <line x1="0" y1="90" x2="900" y2="90" stroke="currentColor" class="text-slate-100 dark:text-slate-800/60" stroke-width="1" stroke-dasharray="4"/>
+            <line x1="0" y1="140" x2="900" y2="140" stroke="currentColor" class="text-slate-100 dark:text-slate-800/60" stroke-width="1" stroke-dasharray="4"/>
+
+            <!-- Gradient Definition -->
+            <defs>
+              <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#0284C7" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="#0284C7" stop-opacity="0.0"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Chart Area Fill -->
+            <path id="chart-area" d="M 0,160 Q 150,110 300,120 T 600,60 T 900,30 L 900,190 L 0,190 Z" fill="url(#chartGradient)"/>
+            
+            <!-- Chart Stroke Line -->
+            <path id="chart-line" d="M 0,160 Q 150,110 300,120 T 600,60 T 900,30" fill="none" stroke="#0284C7" stroke-width="3" stroke-linecap="round"/>
+
+            <!-- Data Point Circles -->
+            <circle cx="150" cy="125" r="4" class="fill-white dark:fill-slate-900 stroke-sky-600 stroke-2 hover:r-6 cursor-pointer transition-all" onclick="showToast('May 14: 4,820 clicks', 'info')"/>
+            <circle cx="300" cy="120" r="4" class="fill-white dark:fill-slate-900 stroke-sky-600 stroke-2 hover:r-6 cursor-pointer transition-all" onclick="showToast('May 21: 5,610 clicks', 'info')"/>
+            <circle cx="600" cy="60" r="4" class="fill-white dark:fill-slate-900 stroke-sky-600 stroke-2 hover:r-6 cursor-pointer transition-all" onclick="showToast('June 01: 7,920 clicks', 'info')"/>
+            <circle cx="900" cy="30" r="5" class="fill-sky-600 stroke-white dark:stroke-slate-900 stroke-2 hover:r-7 cursor-pointer transition-all" onclick="showToast('Today: 9,450 clicks peak!', 'info')"/>
+          </svg>
+        </div>
+
+        <!-- Chart Dates Axis -->
+        <div class="flex justify-between text-[11px] font-mono text-slate-400 mt-2 px-1" id="chart-axis-labels">
+          <span>Day 1</span>
+          <span>Day 8</span>
+          <span>Day 15</span>
+          <span>Day 22</span>
+          <span>Today</span>
+        </div>
+      </div>
+
+      <!-- Links Table Header & Actions -->
+      <div class="bg-white dark:bg-[#131B2E] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex items-center space-x-3">
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white" data-i18n="table_links_title">Active Short Links</h3>
+            <!-- Filter by Tag -->
+            <div class="flex items-center space-x-1">
+              <button onclick="filterLinksByTag('all')" id="tag-all" class="tag-btn text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sky-600 dark:text-sky-400">All</button>
+              <button onclick="filterLinksByTag('marketing')" id="tag-marketing" class="tag-btn text-[11px] font-medium px-2 py-0.5 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">Marketing</button>
+              <button onclick="filterLinksByTag('product')" id="tag-product" class="tag-btn text-[11px] font-medium px-2 py-0.5 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">Product</button>
+              <button onclick="filterLinksByTag('social')" id="tag-social" class="tag-btn text-[11px] font-medium px-2 py-0.5 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">Social</button>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <!-- Table Search Input -->
+            <div class="relative">
+              <i class="fa-solid fa-magnifying-glass text-xs text-slate-400 absolute left-3 top-2.5"></i>
+              <input type="text" id="link-search-input" onkeyup="searchLinksTable()" placeholder="Filter by title, slug, or destination..." class="pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 w-60">
+            </div>
+
+            <!-- Export Links CSV -->
+            <button onclick="exportLinksCSV()" class="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center space-x-1.5 transition">
+              <i class="fa-solid fa-file-arrow-down text-xs text-slate-500"></i>
+              <span data-i18n="btn_export_csv">Export CSV</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Links Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50/75 dark:bg-slate-800/40 text-slate-500 dark:text-slate-400 font-semibold border-b border-slate-100 dark:border-slate-800">
+              <tr>
+                <th class="py-3 px-4" data-i18n="th_short_link">Short Link & Slug</th>
+                <th class="py-3 px-4" data-i18n="th_original_dest">Original Destination</th>
+                <th class="py-3 px-4 text-center" data-i18n="th_clicks">Clicks</th>
+                <th class="py-3 px-4 text-center" data-i18n="th_qr">QR Code</th>
+                <th class="py-3 px-4 text-center" data-i18n="th_status">Status</th>
+                <th class="py-3 px-4" data-i18n="th_created">Created</th>
+                <th class="py-3 px-4 text-right" data-i18n="th_actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="links-table-body" class="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
+              <!-- Dynamically Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Table Footer Pagination / Info -->
+        <div class="p-3 bg-slate-50/50 dark:bg-slate-800/20 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500">
+          <div>
+            <span data-i18n="showing_links">Showing</span> <span class="font-bold text-slate-900 dark:text-white" id="visible-links-count">5</span> <span data-i18n="of_links">of</span> <span class="font-bold text-slate-900 dark:text-white" id="total-table-links">5</span> <span data-i18n="records">links</span>
+          </div>
+          <div class="flex items-center space-x-1">
+            <button onclick="showToast('Already on first page', 'info')" class="px-2 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 disabled:opacity-50 text-[11px]">Prev</button>
+            <span class="px-2 py-1 font-bold text-sky-600 bg-sky-50 dark:bg-sky-950/80 rounded text-[11px]">1</span>
+            <button onclick="showToast('Next page is empty in demo dataset', 'info')" class="px-2 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 disabled:opacity-50 text-[11px]">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Telemetry Insights Row: Referrers & Geographic Distribution -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <!-- Top Referrers -->
+        <div class="bg-white dark:bg-[#131B2E] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <h4 class="text-xs font-bold text-slate-900 dark:text-white mb-3 flex items-center justify-between">
+            <span data-i18n="top_referrers">Top Traffic Referrers</span>
+            <i class="fa-solid fa-compass text-slate-400"></i>
+          </h4>
+          <div class="space-y-3">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold flex items-center"><i class="fa-brands fa-x-twitter w-4 text-slate-900 dark:text-white mr-1.5"></i> X (Twitter)</span>
+                <span class="font-mono text-slate-500">77,401 (42%)</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-sky-500 h-1.5 rounded-full" style="width: 42%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold flex items-center"><i class="fa-brands fa-linkedin w-4 text-blue-600 mr-1.5"></i> LinkedIn</span>
+                <span class="font-mono text-slate-500">51,601 (28%)</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-blue-600 h-1.5 rounded-full" style="width: 28%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold flex items-center"><i class="fa-brands fa-instagram w-4 text-rose-500 mr-1.5"></i> Instagram Bio</span>
+                <span class="font-mono text-slate-500">29,486 (16%)</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-rose-500 h-1.5 rounded-full" style="width: 16%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold flex items-center"><i class="fa-solid fa-envelope w-4 text-amber-500 mr-1.5"></i> Direct / Newsletter</span>
+                <span class="font-mono text-slate-500">25,800 (14%)</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-amber-500 h-1.5 rounded-full" style="width: 14%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Geographic Countries -->
+        <div class="bg-white dark:bg-[#131B2E] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <h4 class="text-xs font-bold text-slate-900 dark:text-white mb-3 flex items-center justify-between">
+            <span data-i18n="top_countries">Top Geographic Markets</span>
+            <i class="fa-solid fa-earth-americas text-slate-400"></i>
+          </h4>
+          <div class="space-y-3">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold flex items-center">🇺🇸 United States</span>
+                <span class="font-mono text-slate-500">88,459 (48%)</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 48%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold flex items-center">🇧🇷 Brazil</span>
+                <span class="font-mono text-slate-500">40,543 (22%)</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 22%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold flex items-center">🇩🇪 Germany</span>
+                <span class="font-mono text-slate-500">25,800 (14%)</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 14%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold flex items-center">🇬🇧 United Kingdom</span>
+                <span class="font-mono text-slate-500">18,429 (10%)</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 10%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Devices & Browsers -->
+        <div class="bg-white dark:bg-[#131B2E] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <h4 class="text-xs font-bold text-slate-900 dark:text-white mb-3 flex items-center justify-between">
+            <span data-i18n="devices_split">Device & Platform Split</span>
+            <i class="fa-solid fa-mobile-screen text-slate-400"></i>
+          </h4>
+          <div class="space-y-3">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold flex items-center"><i class="fa-solid fa-mobile-screen w-4 text-sky-600 mr-1.5"></i> Mobile (iOS / Android)</span>
+                <span class="font-mono text-slate-500">62.4%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-indigo-500 h-1.5 rounded-full" style="width: 62.4%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold flex items-center"><i class="fa-solid fa-laptop w-4 text-indigo-600 mr-1.5"></i> Desktop (Mac / Windows)</span>
+                <span class="font-mono text-slate-500">33.8%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-indigo-500 h-1.5 rounded-full" style="width: 33.8%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold flex items-center"><i class="fa-solid fa-tablet-screen-button w-4 text-purple-600 mr-1.5"></i> Tablets</span>
+                <span class="font-mono text-slate-500">3.8%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-indigo-500 h-1.5 rounded-full" style="width: 3.8%"></div>
+              </div>
+            </div>
+
+            <!-- Health Status Banner -->
+            <div class="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px]">
+              <span class="text-slate-400">Bot / Crawler Filtering:</span>
+              <span class="font-bold text-emerald-600 dark:text-emerald-400 flex items-center">
+                <i class="fa-solid fa-shield-check mr-1"></i> Active (99.8% Clean)
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 2: LINK-IN-BIO PROFILE BUILDER        -->
+    <!-- ========================================== -->
+    <div id="view-bio" class="view-content hidden space-y-6">
+      
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
+        <div>
+          <h2 class="text-base font-bold text-slate-900 dark:text-white" data-i18n="bio_builder_title">Link-in-Bio Visual Profile Customizer</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="bio_builder_sub">Customize themes, social handles, links, and preview live on mobile device in real-time</p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <a href="bio.html" target="_blank" class="px-3 py-1.5 rounded-lg border border-sky-300 dark:border-sky-700 bg-sky-50 dark:bg-sky-950/60 text-xs font-bold text-sky-700 dark:text-sky-300 hover:bg-sky-100 dark:hover:bg-sky-900 transition flex items-center space-x-1.5 shadow-sm">
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            <span data-i18n="btn_view_live_bio">Ver Página Pública ↗</span>
+          </a>
+          <button onclick="copyBioPageURL()" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center space-x-1.5 transition">
+            <i class="fa-regular fa-copy text-xs"></i>
+            <span data-i18n="btn_copy_bio_link">Copy Bio Link</span>
+          </button>
+          <button onclick="saveBioPageConfig()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm shadow-sky-500/20 flex items-center space-x-1.5 transition">
+            <i class="fa-solid fa-floppy-disk text-xs"></i>
+            <span data-i18n="btn_save_bio">Save Changes</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Split Screen: Editor Controls (Left) & Smartphone Preview (Right) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Left: Form Controls (7 cols) -->
+        <div class="lg:col-span-7 space-y-4">
+          
+          <!-- Profile Identity Section -->
+          <div class="bg-white dark:bg-[#131B2E] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+            <h3 class="text-xs font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+              <i class="fa-solid fa-user-pen text-sky-600"></i>
+              <span data-i18n="bio_identity_section">Profile Identity & Branding</span>
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1" data-i18n="bio_handle_label">Bio Page Slug / URL</label>
+                <div class="flex rounded-lg shadow-sm">
+                  <span class="inline-flex items-center px-2.5 rounded-l-lg border border-r-0 border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-500 text-xs font-mono">kip.to/bio/</span>
+                  <input type="text" id="bio-slug-input" value="kiptecnologia" oninput="updateBioPreview()" class="flex-1 rounded-r-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 px-2.5 py-1.5 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-sky-500 font-semibold">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1" data-i18n="bio_display_name_label">Display Name</label>
+                <input type="text" id="bio-name-input" value="Kip Tecnologia" oninput="updateBioPreview()" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 px-2.5 py-1.5 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-sky-500 font-semibold">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1" data-i18n="bio_bio_label">Short Headline / Bio Description</label>
+              <textarea id="bio-headline-input" rows="2" oninput="updateBioPreview()" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 px-2.5 py-1.5 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-sky-500">Fábrica de Micro-SaaS B2B & Ferramentas Digitais de Alta Conversão.</textarea>
+            </div>
+          </div>
+
+          <!-- Theme Palette Selector -->
+          <div class="bg-white dark:bg-[#131B2E] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+            <h3 class="text-xs font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+              <i class="fa-solid fa-palette text-sky-600"></i>
+              <span data-i18n="bio_theme_section">Visual Theme Palette</span>
+            </h3>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <!-- Theme 1: Clean Light -->
+              <button onclick="setBioTheme('clean-light')" id="theme-card-clean-light" class="theme-card p-2.5 rounded-lg border-2 border-sky-600 bg-slate-50 text-left transition">
+                <div class="h-6 w-full rounded bg-white border border-slate-200 mb-1.5 flex items-center justify-center">
+                  <div class="w-12 h-1.5 bg-slate-200 rounded"></div>
+                </div>
+                <p class="text-[11px] font-bold text-slate-800">Clean Light</p>
+                <p class="text-[10px] text-slate-400">Minimal Linear</p>
+              </button>
+
+              <!-- Theme 2: Carbon Slate -->
+              <button onclick="setBioTheme('carbon-slate')" id="theme-card-carbon-slate" class="theme-card p-2.5 rounded-lg border-2 border-transparent hover:border-slate-300 dark:hover:border-slate-600 bg-slate-900 text-left transition">
+                <div class="h-6 w-full rounded bg-slate-800 border border-slate-700 mb-1.5 flex items-center justify-center">
+                  <div class="w-12 h-1.5 bg-slate-600 rounded"></div>
+                </div>
+                <p class="text-[11px] font-bold text-white">Carbon Slate</p>
+                <p class="text-[10px] text-slate-400">Dark Executive</p>
+              </button>
+
+              <!-- Theme 3: Sunset Violet -->
+              <button onclick="setBioTheme('sunset-violet')" id="theme-card-sunset-violet" class="theme-card p-2.5 rounded-lg border-2 border-transparent hover:border-slate-300 dark:hover:border-slate-600 bg-gradient-to-br from-indigo-900 to-purple-900 text-left transition">
+                <div class="h-6 w-full rounded bg-purple-700/50 border border-purple-500/50 mb-1.5 flex items-center justify-center">
+                  <div class="w-12 h-1.5 bg-purple-300 rounded"></div>
+                </div>
+                <p class="text-[11px] font-bold text-white">Sunset Violet</p>
+                <p class="text-[10px] text-purple-200">Creative Purple</p>
+              </button>
+
+              <!-- Theme 4: Emerald Minimal -->
+              <button onclick="setBioTheme('emerald-minimal')" id="theme-card-emerald-minimal" class="theme-card p-2.5 rounded-lg border-2 border-transparent hover:border-slate-300 dark:hover:border-slate-600 bg-emerald-950 text-left transition">
+                <div class="h-6 w-full rounded bg-emerald-800 border border-emerald-700 mb-1.5 flex items-center justify-center">
+                  <div class="w-12 h-1.5 bg-emerald-400 rounded"></div>
+                </div>
+                <p class="text-[11px] font-bold text-white">Emerald</p>
+                <p class="text-[10px] text-emerald-200">Fintech Clean</p>
+              </button>
+            </div>
+          </div>
+
+          <!-- Bio Links Management -->
+          <div class="bg-white dark:bg-[#131B2E] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-xs font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                <i class="fa-solid fa-list-check text-sky-600"></i>
+                <span data-i18n="bio_links_section">Bio Buttons & Links</span>
+              </h3>
+              <button onclick="addNewBioButton()" class="text-xs text-sky-600 hover:text-sky-700 font-bold flex items-center space-x-1">
+                <i class="fa-solid fa-plus text-[10px]"></i>
+                <span data-i18n="btn_add_bio_link">+ Add Button</span>
+              </button>
+            </div>
+
+            <!-- List of Editable Buttons -->
+            <div id="bio-buttons-editor-list" class="space-y-2.5">
+              <!-- Dynamically populated by JS -->
+            </div>
+          </div>
+
+          <!-- Social Channels Bar -->
+          <div class="bg-white dark:bg-[#131B2E] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+            <h3 class="text-xs font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+              <i class="fa-solid fa-share-nodes text-sky-600"></i>
+              <span data-i18n="bio_socials_section">Social Icon Bar</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div>
+                <label class="block text-[10px] text-slate-400 mb-0.5">X / Twitter</label>
+                <input type="text" id="social-x-input" value="@kiptecnologia" oninput="updateBioPreview()" class="w-full text-xs rounded border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-2 py-1">
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-400 mb-0.5">GitHub</label>
+                <input type="text" id="social-github-input" value="KipTecnologia" oninput="updateBioPreview()" class="w-full text-xs rounded border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-2 py-1">
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-400 mb-0.5">YouTube</label>
+                <input type="text" id="social-youtube-input" value="@kiptecnologia" oninput="updateBioPreview()" class="w-full text-xs rounded border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-2 py-1">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Smartphone Live Simulation (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col items-center justify-center p-4 bg-slate-100/70 dark:bg-slate-900/40 rounded-2xl border border-slate-200/80 dark:border-slate-800/80">
+          <p class="text-xs font-semibold text-slate-400 mb-3 flex items-center space-x-1.5">
+            <i class="fa-solid fa-eye text-sky-500"></i>
+            <span data-i18n="live_mobile_preview">Live Mobile Preview (Interactive)</span>
+          </p>
+
+          <!-- Smartphone Shell -->
+          <div class="phone-mockup" id="phone-container">
+            <div class="phone-notch"></div>
+            
+            <!-- Phone Screen Viewport -->
+            <div id="phone-screen" class="w-full h-full pt-10 pb-6 px-4 overflow-y-auto custom-scroll flex flex-col items-center text-center bg-white text-slate-800 transition-colors duration-300">
+              
+              <!-- Avatar -->
+              <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-sky-600 to-indigo-600 flex items-center justify-center text-white text-xl font-bold shadow-md mb-2 border-2 border-white/80">
+                KT
+              </div>
+
+              <!-- Bio Name & Verified Badge -->
+              <h4 id="phone-display-name" class="font-bold text-sm tracking-tight flex items-center justify-center space-x-1">
+                <span>Kip Tecnologia</span>
+                <i class="fa-solid fa-circle-check text-sky-500 text-xs"></i>
+              </h4>
+              <p id="phone-slug" class="text-[10px] text-slate-400 font-mono mb-2">@kiptecnologia</p>
+
+              <!-- Bio Headline -->
+              <p id="phone-headline" class="text-xs text-slate-600 dark:text-slate-300 max-w-[240px] mb-4 line-clamp-3">
+                Fábrica de Micro-SaaS B2B & Ferramentas Digitais de Alta Conversão.
+              </p>
+
+              <!-- Social Icons -->
+              <div class="flex items-center space-x-3 mb-5 text-sm text-slate-600 dark:text-slate-300">
+                <a href="https://x.com" target="_blank" class="hover:text-sky-500 transition"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="https://github.com" target="_blank" class="hover:text-sky-500 transition"><i class="fa-brands fa-github"></i></a>
+                <a href="https://youtube.com" target="_blank" class="hover:text-sky-500 transition"><i class="fa-brands fa-youtube"></i></a>
+                <a href="https://linkedin.com" target="_blank" class="hover:text-sky-500 transition"><i class="fa-brands fa-linkedin"></i></a>
+              </div>
+
+              <!-- Interactive Buttons Inside Phone -->
+              <div id="phone-buttons-list" class="w-full space-y-2.5 mb-6">
+                <!-- Dynamically rendered inside phone -->
+              </div>
+
+              <!-- Phone Footer Badge -->
+              <div class="mt-auto pt-4 text-[9px] text-slate-400 tracking-wider uppercase font-semibold">
+                Powered by LinkCraft Pro
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 3: TEAM & RBAC PERMISSIONS           -->
+    <!-- ========================================== -->
+    <div id="view-users" class="view-content hidden space-y-6">
+      
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
+        <div>
+          <h2 class="text-base font-bold text-slate-900 dark:text-white" data-i18n="rbac_title">Team Members & Role-Based Access Control (RBAC)</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="rbac_sub">Manage team permissions, invite workspace collaborators, and audit access privileges</p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button onclick="exportTeamCSV()" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center space-x-1.5 transition">
+            <i class="fa-solid fa-file-csv text-xs text-slate-500"></i>
+            <span data-i18n="btn_export_team">Export Team CSV</span>
+          </button>
+          <button onclick="openInviteModal()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm shadow-sky-500/20 flex items-center space-x-1.5 transition">
+            <i class="fa-solid fa-user-plus text-xs"></i>
+            <span data-i18n="btn_invite_member">+ Invite Member</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Granular Permissions Matrix Card -->
+      <div class="bg-white dark:bg-[#131B2E] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <h3 class="text-xs font-bold text-slate-900 dark:text-white mb-3 flex items-center space-x-2">
+          <i class="fa-solid fa-key text-sky-600"></i>
+          <span data-i18n="rbac_matrix_title">Granular Permissions Matrix</span>
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 font-semibold">
+              <tr>
+                <th class="py-2.5 px-3">Role</th>
+                <th class="py-2.5 px-3 text-center">Shorten Links</th>
+                <th class="py-2.5 px-3 text-center">Bio Builder</th>
+                <th class="py-2.5 px-3 text-center">View Analytics</th>
+                <th class="py-2.5 px-3 text-center">Custom Domains</th>
+                <th class="py-2.5 px-3 text-center">Manage Billing</th>
+                <th class="py-2.5 px-3 text-center">Delete Links</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
+              <tr>
+                <td class="py-2.5 px-3 font-bold text-indigo-600 dark:text-indigo-400">Workspace Owner</td>
+                <td class="py-2.5 px-3 text-center text-emerald-600"><i class="fa-solid fa-check"></i></td>
+                <td class="py-2.5 px-3 text-center text-emerald-600"><i class="fa-solid fa-check"></i></td>
+                <td class="py-2.5 px-3 text-center text-emerald-600"><i class="fa-solid fa-check"></i></td>
+                <td class="py-2.5 px-3 text-center text-emerald-600"><i class="fa-solid fa-check"></i></td>
+                <td class="py-2.5 px-3 text-center text-emerald-600"><i class="fa-solid fa-check"></i></td>
+                <td class="py-2.5 px-3 text-center text-emerald-600"><i class="fa-solid fa-check"></i></td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-bold text-sky-600 dark:text-sky-400">Administrator</td>
+                <td class="py-2.5 px-3 text-center text-emerald-600"><i class="fa-solid fa-check"></i></td>
+                <td class="py-2.5 px-3 text-center text-emerald-600"><i class="fa-solid fa-check"></i></td>
+                <td class="py-2.5 px-3 text-center text-emerald-600"><i class="fa-solid fa-check"></i></td>
+                <td class="py-2.5 px-3 text-center text-emerald-600"><i class="fa-solid fa-check"></i></td>
+                <td class="py-2.5 px-3 text-center text-rose-500"><i class="fa-solid fa-xmark"></i></td>
+                <td class="py-2.5 px-3 text-center text-emerald-600"><i class="fa-solid fa-check"></i></td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-semibold text-slate-800 dark:text-slate-200">Marketing Lead</td>
+                <td class="py-2.5 px-3 text-center text-emerald-600"><i class="fa-solid fa-check"></i></td>
+                <td class="py-2.5 px-3 text-center text-emerald-600"><i class="fa-solid fa-check"></i></td>
+                <td class="py-2.5 px-3 text-center text-emerald-600"><i class="fa-solid fa-check"></i></td>
+                <td class="py-2.5 px-3 text-center text-rose-500"><i class="fa-solid fa-xmark"></i></td>
+                <td class="py-2.5 px-3 text-center text-rose-500"><i class="fa-solid fa-xmark"></i></td>
+                <td class="py-2.5 px-3 text-center text-rose-500"><i class="fa-solid fa-xmark"></i></td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-semibold text-slate-800 dark:text-slate-200">Growth Analyst</td>
+                <td class="py-2.5 px-3 text-center text-rose-500"><i class="fa-solid fa-xmark"></i></td>
+                <td class="py-2.5 px-3 text-center text-rose-500"><i class="fa-solid fa-xmark"></i></td>
+                <td class="py-2.5 px-3 text-center text-emerald-600"><i class="fa-solid fa-check"></i></td>
+                <td class="py-2.5 px-3 text-center text-rose-500"><i class="fa-solid fa-xmark"></i></td>
+                <td class="py-2.5 px-3 text-center text-rose-500"><i class="fa-solid fa-xmark"></i></td>
+                <td class="py-2.5 px-3 text-center text-rose-500"><i class="fa-solid fa-xmark"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Team Members Directory Table -->
+      <div class="bg-white dark:bg-[#131B2E] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <h3 class="text-xs font-bold text-slate-900 dark:text-white" data-i18n="team_directory_title">Workspace Collaborators</h3>
+          
+          <div class="flex items-center space-x-2">
+            <input type="text" id="member-search-input" onkeyup="searchTeamTable()" placeholder="Search by name or email..." class="px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 w-52">
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50/75 dark:bg-slate-800/40 text-slate-500 dark:text-slate-400 font-semibold border-b border-slate-100 dark:border-slate-800">
+              <tr>
+                <th class="py-3 px-4" data-i18n="th_member">Collaborator</th>
+                <th class="py-3 px-4" data-i18n="th_role">Assigned Role</th>
+                <th class="py-3 px-4" data-i18n="th_links_managed">Links Managed</th>
+                <th class="py-3 px-4" data-i18n="th_last_active">Last Active</th>
+                <th class="py-3 px-4 text-center" data-i18n="th_2fa">2FA Status</th>
+                <th class="py-3 px-4 text-right" data-i18n="th_actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="team-table-body" class="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
+              <!-- Dynamically populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 4: STRIPE BILLING & TIERS             -->
+    <!-- ========================================== -->
+    <div id="view-billing" class="view-content hidden space-y-6">
+      
+      <!-- Active Plan Banner -->
+      <div class="bg-gradient-to-r from-slate-900 to-indigo-950 text-white p-5 rounded-2xl shadow-lg border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center space-x-2 mb-1">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-500 text-white uppercase tracking-wider">ACTIVE SUBSCRIPTION</span>
+            <span class="text-xs text-slate-300">Stripe Customer ID: <code class="font-mono text-sky-400">cus_98xLaP02k</code></span>
+          </div>
+          <h2 class="text-xl font-extrabold text-white">LinkCraft Pro Tier ($29/month)</h2>
+          <p class="text-xs text-slate-300 mt-1">Automatic renewal on <strong class="text-white">December 01, 2026</strong>. Unlimited custom links, branded domains, and team seats included.</p>
+        </div>
+        <div class="flex items-center space-x-2.5 flex-shrink-0">
+          <button onclick="openChangeCardModal()" class="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition border border-white/10">
+            <i class="fa-solid fa-credit-card mr-1.5"></i> Update Card
+          </button>
+          <button onclick="openCancelModal()" class="px-3 py-2 rounded-lg bg-rose-600/80 hover:bg-rose-600 text-white text-xs font-semibold transition">
+            Manage / Cancel
+          </button>
+        </div>
+      </div>
+
+      <!-- 3-Tier SaaS Pricing Comparison -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <!-- Starter Plan -->
+        <div class="bg-white dark:bg-[#131B2E] p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">STARTER</span>
+            <div class="mt-2 flex items-baseline">
+              <span class="text-3xl font-extrabold text-slate-900 dark:text-white">$9</span>
+              <span class="text-xs text-slate-400 ml-1">/ month</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">Ideal for solo founders and personal links.</p>
+            <ul class="mt-4 space-y-2 text-xs text-slate-600 dark:text-slate-300">
+              <li class="flex items-center"><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Up to 1,000 links</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-emerald-500 mr-2"></i> 25,000 clicks/month</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-emerald-500 mr-2"></i> 1 Bio Page</li>
+              <li class="flex items-center text-slate-400"><i class="fa-solid fa-xmark text-slate-300 mr-2"></i> No Custom Domains</li>
+            </ul>
+          </div>
+          <button onclick="simulateDowngrade()" class="mt-6 w-full py-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition">
+            Downgrade to Starter
+          </button>
+        </div>
+
+        <!-- Pro Plan (Current Active) -->
+        <div class="bg-white dark:bg-[#131B2E] p-5 rounded-xl border-2 border-sky-600 shadow-lg relative flex flex-col justify-between">
+          <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-sky-600 text-white text-[10px] font-extrabold px-3 py-0.5 rounded-full uppercase tracking-wider">
+            CURRENT PLAN
+          </div>
+          <div>
+            <span class="text-xs font-bold text-sky-600 uppercase tracking-wider">PRO ENTERPRISE</span>
+            <div class="mt-2 flex items-baseline">
+              <span class="text-3xl font-extrabold text-slate-900 dark:text-white">$29</span>
+              <span class="text-xs text-slate-400 ml-1">/ month</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">Complete commercial toolkit for marketing teams.</p>
+            <ul class="mt-4 space-y-2 text-xs text-slate-600 dark:text-slate-300">
+              <li class="flex items-center font-semibold text-slate-900 dark:text-white"><i class="fa-solid fa-check text-sky-500 mr-2"></i> Unlimited Short Links</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-sky-500 mr-2"></i> 500,000 clicks/month</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-sky-500 mr-2"></i> Custom Branded Domains (SSL)</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-sky-500 mr-2"></i> Unlimited Bio Profiles</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-sky-500 mr-2"></i> Full REST API & Webhooks</li>
+            </ul>
+          </div>
+          <button class="mt-6 w-full py-2 rounded-lg bg-sky-50 dark:bg-sky-950/80 text-sky-700 dark:text-sky-300 text-xs font-bold cursor-default border border-sky-200 dark:border-sky-800">
+            Active Plan
+          </button>
+        </div>
+
+        <!-- Enterprise Scale -->
+        <div class="bg-white dark:bg-[#131B2E] p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">SCALE & VIP</span>
+            <div class="mt-2 flex items-baseline">
+              <span class="text-3xl font-extrabold text-slate-900 dark:text-white">$79</span>
+              <span class="text-xs text-slate-400 ml-1">/ month</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">For multi-brand agencies and high-volume routing.</p>
+            <ul class="mt-4 space-y-2 text-xs text-slate-600 dark:text-slate-300">
+              <li class="flex items-center"><i class="fa-solid fa-check text-indigo-500 mr-2"></i> 5,000,000+ clicks/month</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-indigo-500 mr-2"></i> 10 Custom Domains</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-indigo-500 mr-2"></i> 99.99% Uptime SLA</li>
+              <li class="flex items-center"><i class="fa-solid fa-check text-indigo-500 mr-2"></i> Dedicated IP & Edge Routing</li>
+            </ul>
+          </div>
+          <button onclick="simulateUpgradeEnterprise()" class="mt-6 w-full py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition">
+            Upgrade to Enterprise
+          </button>
+        </div>
+      </div>
+
+      <!-- Payment Method & Invoice History -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <!-- Payment Card Preview -->
+        <div class="bg-white dark:bg-[#131B2E] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <h3 class="text-xs font-bold text-slate-900 dark:text-white mb-3 flex items-center justify-between">
+            <span data-i18n="payment_method_title">Primary Payment Method</span>
+            <i class="fa-solid fa-credit-card text-slate-400"></i>
+          </h3>
+          <div class="p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-7 rounded bg-slate-900 text-white flex items-center justify-center font-bold text-[10px]">
+                VISA
+              </div>
+              <div>
+                <p class="text-xs font-bold text-slate-800 dark:text-slate-200">Visa ending in 4242</p>
+                <p class="text-[10px] text-slate-400">Expires 12/2028 • Default</p>
+              </div>
+            </div>
+            <button onclick="openChangeCardModal()" class="text-xs text-sky-600 hover:text-sky-700 font-semibold" data-i18n="btn_edit">Edit</button>
+          </div>
+        </div>
+
+        <!-- Invoices History Table (2 cols) -->
+        <div class="lg:col-span-2 bg-white dark:bg-[#131B2E] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xs font-bold text-slate-900 dark:text-white" data-i18n="invoices_history_title">Billing History & Tax Invoices</h3>
+            <span class="text-[11px] text-slate-400">All payments secured by Stripe</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="text-slate-400 font-semibold border-b border-slate-100 dark:border-slate-800 pb-2">
+                <tr>
+                  <th class="py-1.5" data-i18n="th_invoice_id">Invoice ID</th>
+                  <th class="py-1.5" data-i18n="th_invoice_date">Date</th>
+                  <th class="py-1.5" data-i18n="th_invoice_amount">Amount</th>
+                  <th class="py-1.5 text-center" data-i18n="th_invoice_status">Status</th>
+                  <th class="py-1.5 text-right" data-i18n="th_invoice_receipt">Receipt</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
+                <tr>
+                  <td class="py-2.5 font-mono text-[11px]">INV-2026-11-01</td>
+                  <td class="py-2.5">Nov 01, 2026</td>
+                  <td class="py-2.5 font-bold">$29.00 USD</td>
+                  <td class="py-2.5 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 font-bold text-[10px]">PAID</span></td>
+                  <td class="py-2.5 text-right"><button onclick="downloadReceipt('INV-2026-11-01', 29.00)" class="text-sky-600 hover:text-sky-700 font-semibold"><i class="fa-solid fa-download mr-1"></i> PDF</button></td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 font-mono text-[11px]">INV-2026-10-01</td>
+                  <td class="py-2.5">Oct 01, 2026</td>
+                  <td class="py-2.5 font-bold">$29.00 USD</td>
+                  <td class="py-2.5 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 font-bold text-[10px]">PAID</span></td>
+                  <td class="py-2.5 text-right"><button onclick="downloadReceipt('INV-2026-10-01', 29.00)" class="text-sky-600 hover:text-sky-700 font-semibold"><i class="fa-solid fa-download mr-1"></i> PDF</button></td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 font-mono text-[11px]">INV-2026-09-01</td>
+                  <td class="py-2.5">Sep 01, 2026</td>
+                  <td class="py-2.5 font-bold">$29.00 USD</td>
+                  <td class="py-2.5 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 font-bold text-[10px]">PAID</span></td>
+                  <td class="py-2.5 text-right"><button onclick="downloadReceipt('INV-2026-09-01', 29.00)" class="text-sky-600 hover:text-sky-700 font-semibold"><i class="fa-solid fa-download mr-1"></i> PDF</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 5: AUDIT & SECURITY GOVERNANCE        -->
+    <!-- ========================================== -->
+    <div id="view-audit" class="view-content hidden space-y-6">
+      
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
+        <div>
+          <h2 class="text-base font-bold text-slate-900 dark:text-white" data-i18n="audit_title">Security Governance & Immutable Event Logs</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="audit_sub">Full audit trail of link mutations, domain changes, authentication events, and API calls</p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button onclick="exportAuditJSON()" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center space-x-1.5 transition">
+            <i class="fa-solid fa-file-code text-xs text-slate-500"></i>
+            <span data-i18n="btn_export_audit">Export Audit Log (JSON)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Security KPI Stat Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+        <div class="p-4 rounded-xl bg-white dark:bg-[#131B2E] border border-slate-200 dark:border-slate-800">
+          <p class="text-xs text-slate-500 dark:text-slate-400">Team 2FA Enforcement</p>
+          <p class="text-xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1 flex items-center">
+            <i class="fa-solid fa-circle-check mr-1.5 text-base"></i> 100% Enforced
+          </p>
+        </div>
+        <div class="p-4 rounded-xl bg-white dark:bg-[#131B2E] border border-slate-200 dark:border-slate-800">
+          <p class="text-xs text-slate-500 dark:text-slate-400">Active Admin Sessions</p>
+          <p class="text-xl font-extrabold text-slate-900 dark:text-white mt-1">3 Active</p>
+        </div>
+        <div class="p-4 rounded-xl bg-white dark:bg-[#131B2E] border border-slate-200 dark:border-slate-800">
+          <p class="text-xs text-slate-500 dark:text-slate-400">Link Safety Phishing Scanner</p>
+          <p class="text-xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">0 Flags</p>
+        </div>
+        <div class="p-4 rounded-xl bg-white dark:bg-[#131B2E] border border-slate-200 dark:border-slate-800">
+          <p class="text-xs text-slate-500 dark:text-slate-400">SOC2 & GDPR Compliance</p>
+          <p class="text-xl font-extrabold text-sky-600 dark:text-sky-400 mt-1">Compliant</p>
+        </div>
+      </div>
+
+      <!-- Audit Events Table -->
+      <div class="bg-white dark:bg-[#131B2E] rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-center space-x-2">
+            <h3 class="text-xs font-bold text-slate-900 dark:text-white" data-i18n="audit_log_title">Audit Trail Records</h3>
+            <!-- Severity Filter -->
+            <select id="audit-severity-filter" onchange="filterAuditLogs()" class="text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 py-1 px-2 focus:outline-none">
+              <option value="ALL">All Severities</option>
+              <option value="INFO">Info</option>
+              <option value="WARNING">Warning</option>
+              <option value="SECURITY">Security</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50/75 dark:bg-slate-800/40 text-slate-500 dark:text-slate-400 font-semibold border-b border-slate-100 dark:border-slate-800">
+              <tr>
+                <th class="py-2.5 px-4" data-i18n="th_event_type">Action / Event</th>
+                <th class="py-2.5 px-4" data-i18n="th_actor">User / Actor</th>
+                <th class="py-2.5 px-4 font-mono text-[11px]" data-i18n="th_ip">IP Address</th>
+                <th class="py-2.5 px-4" data-i18n="th_target">Target Resource</th>
+                <th class="py-2.5 px-4 text-center" data-i18n="th_severity">Severity</th>
+                <th class="py-2.5 px-4 text-right" data-i18n="th_timestamp">Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="audit-table-body" class="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
+              <!-- Dynamically populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 6: SETTINGS & PRODUCTION API          -->
+    <!-- ========================================== -->
+    <div id="view-settings" class="view-content hidden space-y-6">
+      
+      <div class="pb-2 border-b border-slate-200 dark:border-slate-800">
+        <h2 class="text-base font-bold text-slate-900 dark:text-white" data-i18n="settings_title">Workspace & Integration Settings</h2>
+        <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="settings_sub">Configure your custom domains, webhook subscribers, API keys, and notification channels</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Custom Domains & Routing -->
+        <div class="bg-white dark:bg-[#131B2E] p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+          <h3 class="text-xs font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+            <i class="fa-solid fa-globe text-sky-600"></i>
+            <span data-i18n="domain_settings_title">Custom Branded Domains</span>
+          </h3>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Primary Short Domain</label>
+            <div class="flex rounded-lg shadow-sm">
+              <input type="text" id="primary-domain-input" value="kip.to" class="flex-1 rounded-l-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-1.5 text-xs font-mono text-slate-900 dark:text-slate-100">
+              <button onclick="saveDomainConfig()" class="bg-sky-600 hover:bg-sky-700 text-white px-3 py-1.5 rounded-r-lg text-xs font-bold transition">Save</button>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-1">CNAME Target: <code class="font-mono text-sky-600">cname.kiptecnologia.com.br</code> • Status: <span class="text-emerald-500 font-bold">Active SSL</span></p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Default 404 Fallback Redirect</label>
+            <input type="url" id="fallback-url-input" value="https://kiptecnologia.com.br" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-1.5 text-xs text-slate-900 dark:text-slate-100">
+            <p class="text-[11px] text-slate-400 mt-1">Visitors who type an invalid short slug will be automatically routed here.</p>
+          </div>
+        </div>
+
+        <!-- Production REST API Keys -->
+        <div class="bg-white dark:bg-[#131B2E] p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+          <h3 class="text-xs font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+            <i class="fa-solid fa-code text-sky-600"></i>
+            <span data-i18n="api_keys_title">Production REST API Keys</span>
+          </h3>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Live Secret Key</label>
+            <div class="flex items-center space-x-2">
+              <input type="password" id="api-key-input" value="lk_live_948f20bca3810294e77210f9" readonly class="flex-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 px-3 py-1.5 text-xs font-mono text-slate-600 dark:text-slate-300 select-all">
+              <button onclick="toggleKeyVisibility()" title="Reveal/Hide Key" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 text-xs">
+                <i id="key-eye-icon" class="fa-solid fa-eye"></i>
+              </button>
+              <button onclick="copyAPIKey()" title="Copy API Key" class="p-2 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-sm">
+                <i class="fa-regular fa-copy"></i>
+              </button>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-1">Bearer token for creating links and querying click telemetry via curl/fetch.</p>
+          </div>
+
+          <div class="pt-2">
+            <button onclick="regenerateAPIKey()" class="px-3 py-1.5 rounded-lg border border-rose-200 text-rose-600 dark:border-rose-900/60 dark:text-rose-400 text-xs font-semibold hover:bg-rose-50 dark:hover:bg-rose-950/40 transition">
+              <i class="fa-solid fa-rotate mr-1.5"></i> Regenerate Secret API Key
+            </button>
+          </div>
+        </div>
+
+        <!-- Webhook Event Subscription -->
+        <div class="lg:col-span-2 bg-white dark:bg-[#131B2E] p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+              <i class="fa-solid fa-tower-broadcast text-sky-600"></i>
+              <span data-i18n="webhook_title">Click & Link Webhook Dispatcher</span>
+            </h3>
+            <button onclick="sendTestWebhookPing()" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-bold text-sky-600 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center space-x-1.5 transition">
+              <i class="fa-solid fa-paper-plane text-xs"></i>
+              <span data-i18n="btn_test_webhook">Send Test Ping</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Webhook Endpoint URL</label>
+              <input type="url" id="webhook-url-input" value="https://api.mycompany.com/webhooks/linkcraft" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-1.5 text-xs text-slate-900 dark:text-slate-100">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">HMAC SHA-256 Signing Secret</label>
+              <input type="text" value="whsec_04f828a2b5e7d991" readonly class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 px-3 py-1.5 text-xs font-mono text-slate-500">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODALS & COMMAND PALETTE (INTERACTIVE)     -->
+  <!-- ========================================== -->
+
+  <!-- MODAL: SHORTEN / CREATE NEW LINK -->
+  <div id="modal-shorten" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#131B2E] rounded-2xl max-w-lg w-full border border-slate-200 dark:border-slate-800 shadow-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+        <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+          <i class="fa-solid fa-link text-sky-600"></i>
+          <span data-i18n="modal_new_link_title">Create New Short Link</span>
+        </h3>
+        <button onclick="closeModal('modal-shorten')" class="text-slate-400 hover:text-slate-600 text-sm">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1" data-i18n="label_dest_url">Destination URL *</label>
+          <input type="url" id="new-dest-url" placeholder="https://example.com/my-long-landing-page" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-sky-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1" data-i18n="label_custom_slug">Custom Slug</label>
+            <div class="flex rounded-lg shadow-sm">
+              <span class="inline-flex items-center px-2 rounded-l-lg border border-r-0 border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-500 text-xs font-mono">kip.to/</span>
+              <input type="text" id="new-slug" placeholder="launch" class="flex-1 rounded-r-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-2.5 py-1.5 text-xs text-slate-900 dark:text-slate-100 font-mono">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1" data-i18n="label_link_title">Campaign / Title</label>
+            <input type="text" id="new-title" placeholder="Summer Promo Campaign" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-1.5 text-xs text-slate-900 dark:text-slate-100">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1" data-i18n="label_tag">Tag / Category</label>
+            <select id="new-tag" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-1.5 text-xs text-slate-900 dark:text-slate-100">
+              <option value="marketing">Marketing</option>
+              <option value="product">Product</option>
+              <option value="social">Social</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1" data-i18n="label_protection">Password Protect (Optional)</label>
+            <input type="password" id="new-password" placeholder="Leave empty for public" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-1.5 text-xs text-slate-900 dark:text-slate-100">
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end space-x-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+        <button onclick="closeModal('modal-shorten')" class="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800" data-i18n="btn_cancel">Cancel</button>
+        <button onclick="submitNewLink()" class="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-sm transition" data-i18n="btn_save_link">Create & Copy Link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: QR CODE PREVIEW & DOWNLOAD -->
+  <div id="modal-qr" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#131B2E] rounded-2xl max-w-sm w-full border border-slate-200 dark:border-slate-800 shadow-2xl p-6 text-center space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
+        <h3 class="text-xs font-bold text-slate-900 dark:text-white" id="qr-modal-title">QR Code</h3>
+        <button onclick="closeModal('modal-qr')" class="text-slate-400 hover:text-slate-600 text-sm">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-500 font-mono" id="qr-modal-url">https://kip.to/sale</p>
+
+      <!-- QR Canvas Holder -->
+      <div class="flex items-center justify-center p-4 bg-white rounded-xl border border-slate-200 shadow-inner">
+        <div id="qrcode-container" class="w-48 h-48 flex items-center justify-center"></div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 pt-2">
+        <button onclick="downloadQRCodePNG()" class="py-2 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition flex items-center justify-center space-x-1">
+          <i class="fa-solid fa-download text-xs"></i>
+          <span>Download PNG</span>
+        </button>
+        <button onclick="copyQRLink()" class="py-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center justify-center space-x-1">
+          <i class="fa-regular fa-copy text-xs"></i>
+          <span>Copy URL</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: INVITE TEAM MEMBER -->
+  <div id="modal-invite" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#131B2E] rounded-2xl max-w-md w-full border border-slate-200 dark:border-slate-800 shadow-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+        <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+          <i class="fa-solid fa-user-plus text-sky-600"></i>
+          <span data-i18n="invite_modal_title">Invite Team Member</span>
+        </h3>
+        <button onclick="closeModal('modal-invite')" class="text-slate-400 hover:text-slate-600 text-sm">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1" data-i18n="label_invite_email">Email Address *</label>
+          <input type="email" id="invite-email" placeholder="colleague@kiptecnologia.com.br" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-sky-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1" data-i18n="label_invite_name">Full Name</label>
+          <input type="text" id="invite-name" placeholder="Ana Silva" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-sky-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1" data-i18n="label_invite_role">RBAC Role Privilege</label>
+          <select id="invite-role" class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-2 text-xs text-slate-900 dark:text-slate-100">
+            <option value="Administrator">Administrator</option>
+            <option value="Marketing Lead" selected>Marketing Lead</option>
+            <option value="Growth Analyst">Growth Analyst</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end space-x-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+        <button onclick="closeModal('modal-invite')" class="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800" data-i18n="btn_cancel">Cancel</button>
+        <button onclick="submitInviteMember()" class="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-sm transition" data-i18n="btn_send_invite">Send Invitation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMAND PALETTE MODAL (⌘K) -->
+  <div id="modal-cmd" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-start justify-center pt-20 p-4">
+    <div class="bg-white dark:bg-[#131B2E] rounded-2xl max-w-xl w-full border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden">
+      <div class="p-3 border-b border-slate-100 dark:border-slate-800 flex items-center space-x-2">
+        <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm ml-2"></i>
+        <input type="text" id="cmd-input" onkeyup="filterCmdPalette()" placeholder="Type a command or jump to view..." class="flex-1 bg-transparent border-0 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none">
+        <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-[10px] text-slate-400 font-mono">ESC</kbd>
+      </div>
+
+      <div id="cmd-results" class="p-2 max-h-80 overflow-y-auto space-y-1 text-xs">
+        <div onclick="cmdJump('overview'); closeModal('modal-cmd')" class="cmd-item p-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between cursor-pointer">
+          <span class="flex items-center space-x-2.5"><i class="fa-solid fa-link text-sky-600 w-4"></i><span class="font-semibold">Go to Links & Overview</span></span>
+          <span class="text-[10px] text-slate-400">Navigation</span>
+        </div>
+        <div onclick="cmdJump('bio'); closeModal('modal-cmd')" class="cmd-item p-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between cursor-pointer">
+          <span class="flex items-center space-x-2.5"><i class="fa-solid fa-mobile-screen-button text-amber-500 w-4"></i><span class="font-semibold">Open Link-in-Bio Builder</span></span>
+          <span class="text-[10px] text-slate-400">Builder</span>
+        </div>
+        <div onclick="cmdJump('users'); closeModal('modal-cmd')" class="cmd-item p-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between cursor-pointer">
+          <span class="flex items-center space-x-2.5"><i class="fa-solid fa-users text-indigo-500 w-4"></i><span class="font-semibold">Manage Team & RBAC Roles</span></span>
+          <span class="text-[10px] text-slate-400">Security</span>
+        </div>
+        <div onclick="cmdJump('billing'); closeModal('modal-cmd')" class="cmd-item p-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between cursor-pointer">
+          <span class="flex items-center space-x-2.5"><i class="fa-brands fa-stripe text-blue-600 w-4"></i><span class="font-semibold">View Stripe Invoices & Plans</span></span>
+          <span class="text-[10px] text-slate-400">Billing</span>
+        </div>
+        <div onclick="closeModal('modal-cmd'); openShortenModal()" class="cmd-item p-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between cursor-pointer">
+          <span class="flex items-center space-x-2.5"><i class="fa-solid fa-plus text-emerald-500 w-4"></i><span class="font-semibold">Action: Shorten New URL</span></span>
+          <span class="text-[10px] text-slate-400">Action</span>
+        </div>
+        <div onclick="closeModal('modal-cmd'); toggleDarkMode()" class="cmd-item p-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between cursor-pointer">
+          <span class="flex items-center space-x-2.5"><i class="fa-solid fa-circle-half-stroke text-slate-400 w-4"></i><span class="font-semibold">Toggle Dark / Light Mode</span></span>
+          <span class="text-[10px] text-slate-400">Appearance</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT APPLICATION CORE LOGIC -->
+  <script>
+    // ==========================================
+    // DATA STORE & STATE
+    // ==========================================
+    let currentLang = 'en';
+    let currentTheme = 'light';
+    let currentBioTheme = 'clean-light';
+
+    // Active Links Dataset
+    let linksData = [
+      { id: 1, slug: 'launch', title: 'Product Launch 2026', dest: 'https://kiptecnologia.com.br/releases/v2', clicks: 42180, tag: 'marketing', status: 'active', date: '2026-11-01' },
+      { id: 2, slug: 'bio', title: 'Main Link-in-Bio Hub', dest: 'https://kip.to/bio/kiptecnologia', clicks: 38450, tag: 'social', status: 'active', date: '2026-10-28' },
+      { id: 3, slug: 'bundle-5in1', title: 'Kip 5-in-One Commercial Bundle', dest: 'https://kiptecnologia.gumroad.com/l/5-in-one', clicks: 54190, tag: 'product', status: 'active', date: '2026-10-20' },
+      { id: 4, slug: 'github', title: 'Official GitHub Organization', dest: 'https://github.com/KipTecnologia', clicks: 27940, tag: 'social', status: 'active', date: '2026-10-15' },
+      { id: 5, slug: 'blackfriday', title: 'Exclusive Discount Campaign', dest: 'https://kiptecnologia.gumroad.com/l/linkcraft-pro', clicks: 21530, tag: 'marketing', status: 'paused', date: '2026-10-10' }
+    ];
+
+    // Team Collaborators Dataset
+    let teamData = [
+      { id: 1, name: 'Henrique K.', email: 'contato@kiptecnologia.com.br', role: 'Workspace Owner', links: 84, lastActive: '2 mins ago', has2FA: true },
+      { id: 2, name: 'Lucas Ferreira', email: 'lucas@kiptecnologia.com.br', role: 'Administrator', links: 39, lastActive: '1 hour ago', has2FA: true },
+      { id: 3, name: 'Camila Rocha', email: 'camila@kiptecnologia.com.br', role: 'Marketing Lead', links: 25, lastActive: 'Yesterday', has2FA: true }
+    ];
+
+    // Audit Log Dataset
+    let auditData = [
+      { id: 1, action: 'LINK_CREATED', actor: 'Henrique K.', ip: '189.40.21.94', target: 'kip.to/bundle-5in1', severity: 'INFO', time: '10 mins ago' },
+      { id: 2, action: 'DOMAIN_SSL_RENEWED', actor: 'System Worker', ip: '127.0.0.1', target: 'kip.to', severity: 'INFO', time: '1 hour ago' },
+      { id: 3, action: 'API_KEY_ACCESSED', actor: 'Lucas Ferreira', ip: '201.86.15.11', target: 'lk_live_***', severity: 'SECURITY', time: '3 hours ago' },
+      { id: 4, action: 'LINK_STATUS_CHANGED', actor: 'Camila Rocha', ip: '177.12.90.45', target: 'kip.to/blackfriday (PAUSED)', severity: 'WARNING', time: '5 hours ago' },
+      { id: 5, action: 'STRIPE_INVOICE_PAID', actor: 'Stripe Webhook', ip: '54.187.159.182', target: 'INV-2026-11-01 ($29.00)', severity: 'INFO', time: 'Nov 01, 2026' }
+    ];
+
+    // Bio Page Editable Buttons
+    let bioButtons = [
+      { id: 1, label: '🚀 Explore Kip Micro-SaaS Boilerplates', url: 'https://github.com/KipTecnologia' },
+      { id: 2, label: '📦 Grab the 5-in-One Commercial Bundle ($99)', url: 'https://kiptecnologia.gumroad.com/l/5-in-one' },
+      { id: 3, label: '⚡ LinkCraft Pro v2.0 Source Code ($49)', url: 'https://kiptecnologia.gumroad.com/l/linkcraft-pro' },
+      { id: 4, label: '💬 Talk to Executive Support on WhatsApp', url: 'https://wa.me/' }
+    ];
+
+    // Bilingual Dictionary
+    const i18n = {
+      en: {
+        banner_tag: 'PRO COMMERCIAL',
+        banner_title: 'Ready-to-deploy Next.js 15 App Router Micro-SaaS. Full Source Code, Prisma ORM, Stripe Billing & RBAC.',
+        banner_btn_single: 'Buy LinkCraft Pro ($49)',
+        banner_btn_bundle: '5-in-1 Bundle ($99)',
+        workspaces_title: 'Switch Workspace',
+        add_workspace: '+ Add New Workspace',
+        cmd_search_placeholder: 'Search links, analytics, actions...',
+        btn_new_link: 'Create Link',
+        nav_links: 'Links & Overview',
+        nav_bio: 'Link-in-Bio',
+        nav_users: 'Team & RBAC',
+        nav_billing: 'Stripe Billing',
+        nav_audit: 'Audit & Security',
+        nav_settings: 'Settings & API',
+        custom_domain_label: 'Branded Domain:',
+        kpi_total_links: 'Active Short Links',
+        kpi_links_sub: '+16 new links created this week',
+        kpi_total_clicks: 'Total Clicks Redirected',
+        kpi_clicks_sub: 'Vs. 147,600 in prior 30 days',
+        kpi_unique_visitors: 'Unique Global Visitors',
+        kpi_visitors_sub: '52.3% return audience rate',
+        kpi_avg_ctr: 'Average Link CTR',
+        kpi_ctr_sub: 'Top campaign: 12.4% CTR',
+        chart_title: 'Click Telemetry & Traffic Trajectory',
+        chart_sub: 'Visual click distribution and conversion velocity across marketing channels',
+        table_links_title: 'Active Short Links',
+        btn_export_csv: 'Export CSV',
+        th_short_link: 'Short Link & Slug',
+        th_original_dest: 'Original Destination',
+        th_clicks: 'Clicks',
+        th_qr: 'QR Code',
+        th_status: 'Status',
+        th_created: 'Created',
+        th_actions: 'Actions',
+        showing_links: 'Showing',
+        of_links: 'of',
+        records: 'links',
+        top_referrers: 'Top Traffic Referrers',
+        top_countries: 'Top Geographic Markets',
+        devices_split: 'Device & Platform Split',
+        bio_builder_title: 'Link-in-Bio Visual Profile Customizer',
+        bio_builder_sub: 'Customize themes, social handles, links, and preview live on mobile device in real-time',
+        btn_copy_bio_link: 'Copy Bio Link',
+        btn_save_bio: 'Save Changes',
+        bio_identity_section: 'Profile Identity & Branding',
+        bio_handle_label: 'Bio Page Slug / URL',
+        bio_display_name_label: 'Display Name',
+        bio_bio_label: 'Short Headline / Bio Description',
+        bio_theme_section: 'Visual Theme Palette',
+        bio_links_section: 'Bio Buttons & Links',
+        btn_add_bio_link: '+ Add Button',
+        bio_socials_section: 'Social Icon Bar',
+        live_mobile_preview: 'Live Mobile Preview (Interactive)',
+        rbac_title: 'Team Members & Role-Based Access Control (RBAC)',
+        rbac_sub: 'Manage team permissions, invite workspace collaborators, and audit access privileges',
+        btn_export_team: 'Export Team CSV',
+        btn_invite_member: '+ Invite Member',
+        rbac_matrix_title: 'Granular Permissions Matrix',
+        team_directory_title: 'Workspace Collaborators',
+        th_member: 'Collaborator',
+        th_role: 'Assigned Role',
+        th_links_managed: 'Links Managed',
+        th_last_active: 'Last Active',
+        th_2fa: '2FA Status',
+        btn_edit: 'Edit',
+        payment_method_title: 'Primary Payment Method',
+        invoices_history_title: 'Billing History & Tax Invoices',
+        th_invoice_id: 'Invoice ID',
+        th_invoice_date: 'Date',
+        th_invoice_amount: 'Amount',
+        th_invoice_status: 'Status',
+        th_invoice_receipt: 'Receipt',
+        audit_title: 'Security Governance & Immutable Event Logs',
+        audit_sub: 'Full audit trail of link mutations, domain changes, authentication events, and API calls',
+        btn_export_audit: 'Export Audit Log (JSON)',
+        audit_log_title: 'Audit Trail Records',
+        th_event_type: 'Action / Event',
+        th_actor: 'User / Actor',
+        th_ip: 'IP Address',
+        th_target: 'Target Resource',
+        th_severity: 'Severity',
+        th_timestamp: 'Timestamp',
+        settings_title: 'Workspace & Integration Settings',
+        settings_sub: 'Configure your custom domains, webhook subscribers, API keys, and notification channels',
+        domain_settings_title: 'Custom Branded Domains',
+        api_keys_title: 'Production REST API Keys',
+        webhook_title: 'Click & Link Webhook Dispatcher',
+        btn_test_webhook: 'Send Test Ping',
+        modal_new_link_title: 'Create New Short Link',
+        label_dest_url: 'Destination URL *',
+        label_custom_slug: 'Custom Slug',
+        label_link_title: 'Campaign / Title',
+        label_tag: 'Tag / Category',
+        label_protection: 'Password Protect (Optional)',
+        btn_cancel: 'Cancel',
+        btn_save_link: 'Create & Copy Link',
+        invite_modal_title: 'Invite Team Member',
+        label_invite_email: 'Email Address *',
+        label_invite_name: 'Full Name',
+        label_invite_role: 'RBAC Role Privilege',
+        btn_send_invite: 'Send Invitation'
+      },
+      pt: {
+        banner_tag: 'PRO COMERCIAL',
+        banner_title: 'Micro-SaaS pronto em Next.js 15 App Router. Código Fonte Completo, Prisma ORM, Stripe e RBAC.',
+        banner_btn_single: 'Comprar LinkCraft Pro ($49)',
+        banner_btn_bundle: 'Bundle 5-em-1 ($99)',
+        workspaces_title: 'Alternar Workspace',
+        add_workspace: '+ Novo Workspace',
+        cmd_search_placeholder: 'Buscar links, métricas, ações...',
+        btn_new_link: 'Criar Link',
+        nav_links: 'Links & Visão Geral',
+        nav_bio: 'Link-na-Bio',
+        nav_users: 'Equipe & RBAC',
+        nav_billing: 'Faturamento Stripe',
+        nav_audit: 'Auditoria & Segurança',
+        nav_settings: 'Configurações & API',
+        custom_domain_label: 'Domínio Próprio:',
+        kpi_total_links: 'Links Ativos',
+        kpi_links_sub: '+16 novos links criados esta semana',
+        kpi_total_clicks: 'Total de Cliques Redirecionados',
+        kpi_clicks_sub: 'Vs. 147.600 nos 30 dias anteriores',
+        kpi_unique_visitors: 'Visitantes Únicos Globais',
+        kpi_visitors_sub: '52,3% de taxa de retorno',
+        kpi_avg_ctr: 'CTR Médio dos Links',
+        kpi_ctr_sub: 'Melhor campanha: 12,4% de CTR',
+        chart_title: 'Telemetria de Cliques & Trajetória de Tráfego',
+        chart_sub: 'Distribuição visual de cliques e velocidade de conversão nos canais de marketing',
+        table_links_title: 'Links Encurtados Ativos',
+        btn_export_csv: 'Exportar CSV',
+        th_short_link: 'Link Curto & Slug',
+        th_original_dest: 'Destino Original',
+        th_clicks: 'Cliques',
+        th_qr: 'QR Code',
+        th_status: 'Status',
+        th_created: 'Criado em',
+        th_actions: 'Ações',
+        showing_links: 'Exibindo',
+        of_links: 'de',
+        records: 'links',
+        top_referrers: 'Principais Origens de Tráfego',
+        top_countries: 'Principais Mercados Geográficos',
+        devices_split: 'Divisão por Dispositivo & Plataforma',
+        bio_builder_title: 'Customizador Visual de Perfil Link-na-Bio',
+        bio_builder_sub: 'Personalize temas, redes sociais, links e visualize ao vivo no smartphone em tempo real',
+        btn_copy_bio_link: 'Copiar Link da Bio',
+        btn_save_bio: 'Salvar Alterações',
+        bio_identity_section: 'Identidade do Perfil & Marca',
+        bio_handle_label: 'Slug da Página / URL',
+        bio_display_name_label: 'Nome de Exibição',
+        bio_bio_label: 'Biografia Curta / Descrição',
+        bio_theme_section: 'Paleta de Temas Visuais',
+        bio_links_section: 'Botões & Links da Bio',
+        btn_add_bio_link: '+ Adicionar Botão',
+        bio_socials_section: 'Barra de Redes Sociais',
+        live_mobile_preview: 'Prévia Mobile em Tempo Real (Interativo)',
+        rbac_title: 'Membros da Equipe & Controle de Acesso (RBAC)',
+        rbac_sub: 'Gerencie permissões da equipe, convide colaboradores e audite privilégios de acesso',
+        btn_export_team: 'Exportar CSV da Equipe',
+        btn_invite_member: '+ Convidar Membro',
+        rbac_matrix_title: 'Matriz Granular de Permissões',
+        team_directory_title: 'Colaboradores do Workspace',
+        th_member: 'Colaborador',
+        th_role: 'Função Atribuída',
+        th_links_managed: 'Links Gerenciados',
+        th_last_active: 'Última Atividade',
+        th_2fa: 'Status 2FA',
+        btn_edit: 'Editar',
+        payment_method_title: 'Forma de Pagamento Principal',
+        invoices_history_title: 'Histórico de Faturamento & Recibos',
+        th_invoice_id: 'ID da Fatura',
+        th_invoice_date: 'Data',
+        th_invoice_amount: 'Valor',
+        th_invoice_status: 'Status',
+        th_invoice_receipt: 'Recibo',
+        audit_title: 'Governança de Segurança & Logs Imutáveis',
+        audit_sub: 'Trilha completa de auditoria de links, domínios, autenticação e chamadas de API',
+        btn_export_audit: 'Exportar Log (JSON)',
+        audit_log_title: 'Registros de Auditoria',
+        th_event_type: 'Ação / Evento',
+        th_actor: 'Usuário / Ator',
+        th_ip: 'Endereço IP',
+        th_target: 'Recurso Alvo',
+        th_severity: 'Severidade',
+        th_timestamp: 'Horário',
+        settings_title: 'Configurações do Workspace & Integrações',
+        settings_sub: 'Configure domínios próprios, assinantes de webhook, chaves de API e notificações',
+        domain_settings_title: 'Domínios Personalizados de Marca',
+        api_keys_title: 'Chaves de API REST de Produção',
+        webhook_title: 'Disparador de Webhooks de Cliques & Links',
+        btn_test_webhook: 'Enviar Ping de Teste',
+        modal_new_link_title: 'Criar Novo Link Encurtado',
+        label_dest_url: 'URL de Destino *',
+        label_custom_slug: 'Slug Personalizado',
+        label_link_title: 'Campanha / Título',
+        label_tag: 'Tag / Categoria',
+        label_protection: 'Proteger com Senha (Opcional)',
+        btn_cancel: 'Cancelar',
+        btn_save_link: 'Criar & Copiar Link',
+        invite_modal_title: 'Convidar Membro para Equipe',
+        label_invite_email: 'Endereço de E-mail *',
+        label_invite_name: 'Nome Completo',
+        label_invite_role: 'Função RBAC',
+        btn_send_invite: 'Enviar Convite'
+      }
+    };
+
+    // ==========================================
+    // INITIALIZATION & EVENT HANDLERS
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        const savedLinks = localStorage.getItem('linkcraft_links_data');
+        if (savedLinks) linksData = JSON.parse(savedLinks);
+        const savedBio = localStorage.getItem('linkcraft_bio_config');
+        if (savedBio) {
+          const b = JSON.parse(savedBio);
+          if (b.name && document.getElementById('bio-name-input')) document.getElementById('bio-name-input').value = b.name;
+          if (b.slug && document.getElementById('bio-slug-input')) document.getElementById('bio-slug-input').value = b.slug;
+          if (b.headline && document.getElementById('bio-headline-input')) document.getElementById('bio-headline-input').value = b.headline;
+          if (b.theme) currentBioTheme = b.theme;
+          if (b.buttons) bioButtons = b.buttons;
+        }
+      } catch (e) {}
+
+      renderLinksTable();
+      renderTeamTable();
+      renderAuditTable();
+      renderBioButtonsEditor();
+      updateBioPreview();
+
+      // Keyboard Shortcut listener for ⌘K / Ctrl+K and ESC
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          openCmdPalette();
+        }
+        if (e.key === 'Escape') {
+          closeAllModals();
+        }
+      });
+    });
+
+    // ==========================================
+    // NAVIGATION & VIEW SWITCHING
+    // ==========================================
+    function switchTab(tabName) {
+      document.querySelectorAll('.view-content').forEach(v => v.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('text-sky-600', 'dark:text-sky-400', 'bg-sky-50', 'dark:bg-sky-950/60');
+        b.classList.add('text-slate-600', 'dark:text-slate-400');
+      });
+
+      const targetView = document.getElementById(`view-${tabName}`);
+      const targetBtn = document.getElementById(`tab-${tabName}`);
+      if (targetView && targetBtn) {
+        targetView.classList.remove('hidden');
+        targetBtn.classList.add('text-sky-600', 'dark:text-sky-400', 'bg-sky-50', 'dark:bg-sky-950/60');
+        targetBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
+      }
+      showToast(`Switched to ${tabName.toUpperCase()} view`, 'info');
+    }
+
+    // ==========================================
+    // BILINGUAL ENGINE
+    // ==========================================
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'pt' : 'en';
+      document.getElementById('lang-indicator').innerText = currentLang === 'en' ? '🇺🇸 EN' : '🇧🇷 PT';
+      
+      const dict = i18n[currentLang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          el.innerText = dict[key];
+        }
+      });
+      showToast(currentLang === 'en' ? 'Language switched to English 🇺🇸' : 'Idioma alterado para Português 🇧🇷', 'success');
+    }
+
+    // ==========================================
+    // CLEAN LIGHT / CARBON SLATE THEME TOGGLE
+    // ==========================================
+    function toggleDarkMode() {
+      const html = document.documentElement;
+      const themeIcon = document.getElementById('theme-icon');
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        themeIcon.className = 'fa-solid fa-moon text-xs';
+        currentTheme = 'light';
+        showToast('Clean Light Mode enabled (Radix Inspired)', 'info');
+      } else {
+        html.classList.remove('light');
+        html.classList.add('dark');
+        themeIcon.className = 'fa-solid fa-sun text-xs text-amber-400';
+        currentTheme = 'dark';
+        showToast('Carbon Slate Dark Mode enabled', 'info');
+      }
+    }
+
+    // ==========================================
+    // TOAST SYSTEM (NO BLOCKING ALERTS)
+    // ==========================================
+    let toastTimeout;
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const msg = document.getElementById('toast-msg');
+      const icon = document.getElementById('toast-icon');
+
+      msg.innerText = message;
+      if (type === 'success') {
+        icon.className = 'fa-solid fa-circle-check text-emerald-400 dark:text-emerald-600 text-sm';
+      } else if (type === 'warning') {
+        icon.className = 'fa-solid fa-triangle-exclamation text-amber-400 text-sm';
+      } else if (type === 'info') {
+        icon.className = 'fa-solid fa-circle-info text-sky-400 text-sm';
+      }
+
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3500);
+    }
+
+    // ==========================================
+    // LINKS TABLE LOGIC & ACTIONS
+    // ==========================================
+    function renderLinksTable(items = linksData) {
+      const tbody = document.getElementById('links-table-body');
+      tbody.innerHTML = '';
+
+      if (items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-slate-400 italic">No matching short links found.</td></tr>`;
+        document.getElementById('visible-links-count').innerText = '0';
+        return;
+      }
+
+      items.forEach(link => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition group';
+        
+        const statusBadge = link.status === 'active' 
+          ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 badge-dot badge-active">ACTIVE</span>`
+          : `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 dark:bg-amber-950/80 dark:text-amber-300 badge-dot badge-paused">PAUSED</span>`;
+
+        tr.innerHTML = `
+          <td class="py-3 px-4">
+            <div class="flex items-center space-x-2">
+              <span class="font-bold text-slate-900 dark:text-white">${link.title}</span>
+            </div>
+            <div class="flex items-center space-x-1.5 mt-0.5">
+              <a href="r.html?slug=${link.slug}" target="_blank" title="Testar Redirecionamento (Permalink)" class="font-mono text-sky-600 dark:text-sky-400 font-semibold text-[11px] hover:underline flex items-center">
+                <span>kip.to/${link.slug}</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-1 opacity-70"></i>
+              </a>
+              <button onclick="copyToClipboard('https://kip.to/${link.slug}')" title="Copy Short URL" class="text-slate-400 hover:text-sky-600 text-xs transition">
+                <i class="fa-regular fa-copy"></i>
+              </button>
+            </div>
+          </td>
+          <td class="py-3 px-4 max-w-xs">
+            <a href="${link.dest}" target="_blank" class="truncate block text-slate-500 dark:text-slate-400 hover:text-sky-600 dark:hover:text-sky-400 text-xs">
+              ${link.dest}
+            </a>
+          </td>
+          <td class="py-3 px-4 text-center font-mono font-bold text-slate-800 dark:text-slate-200">
+            ${link.clicks.toLocaleString()}
+          </td>
+          <td class="py-3 px-4 text-center">
+            <button onclick="openQRModal('https://kip.to/${link.slug}', '${link.title}')" class="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Show QR Code">
+              <i class="fa-solid fa-qrcode text-xs"></i>
+            </button>
+          </td>
+          <td class="py-3 px-4 text-center">
+            ${statusBadge}
+          </td>
+          <td class="py-3 px-4 text-slate-400 text-[11px] font-mono">
+            ${link.date}
+          </td>
+          <td class="py-3 px-4 text-right">
+            <div class="flex items-center justify-end space-x-2">
+              <a href="r.html?slug=${link.slug}" target="_blank" title="Testar Redirecionamento" class="p-1 rounded text-slate-400 hover:text-sky-500">
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+              </a>
+              <button onclick="toggleLinkStatus(${link.id})" title="Toggle Active/Paused" class="p-1 rounded text-slate-400 hover:text-amber-500">
+                <i class="fa-solid fa-power-off text-xs"></i>
+              </button>
+              <button onclick="deleteLink(${link.id})" title="Delete Link" class="p-1 rounded text-slate-400 hover:text-rose-500">
+                <i class="fa-regular fa-trash-can text-xs"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('visible-links-count').innerText = items.length;
+      document.getElementById('total-table-links').innerText = linksData.length;
+      document.getElementById('stat-links-count').innerText = linksData.length;
+    }
+
+    function searchLinksTable() {
+      const q = document.getElementById('link-search-input').value.toLowerCase();
+      const filtered = linksData.filter(l => 
+        l.title.toLowerCase().includes(q) || 
+        l.slug.toLowerCase().includes(q) || 
+        l.dest.toLowerCase().includes(q)
+      );
+      renderLinksTable(filtered);
+    }
+
+    function filterLinksByTag(tag) {
+      document.querySelectorAll('.tag-btn').forEach(b => {
+        b.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-sky-600', 'dark:text-sky-400', 'font-bold');
+        b.classList.add('text-slate-500', 'font-medium');
+      });
+      const activeBtn = document.getElementById(`tag-${tag}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-sky-600', 'dark:text-sky-400', 'font-bold');
+        activeBtn.classList.remove('text-slate-500', 'font-medium');
+      }
+
+      if (tag === 'all') {
+        renderLinksTable(linksData);
+      } else {
+        const filtered = linksData.filter(l => l.tag === tag);
+        renderLinksTable(filtered);
+      }
+    }
+
+    function toggleLinkStatus(id) {
+      const link = linksData.find(l => l.id === id);
+      if (link) {
+        link.status = link.status === 'active' ? 'paused' : 'active';
+        renderLinksTable();
+        showToast(`Link "kip.to/${link.slug}" status changed to ${link.status.toUpperCase()}`, 'warning');
+      }
+    }
+
+    function deleteLink(id) {
+      const link = linksData.find(l => l.id === id);
+      if (link) {
+        linksData = linksData.filter(l => l.id !== id);
+        renderLinksTable();
+        showToast(`Short link "kip.to/${link.slug}" deleted successfully`, 'warning');
+      }
+    }
+
+    function submitNewLink() {
+      const dest = document.getElementById('new-dest-url').value.trim();
+      const slug = document.getElementById('new-slug').value.trim() || 'link-' + Math.floor(Math.random() * 8999 + 1000);
+      const title = document.getElementById('new-title').value.trim() || 'New Campaign Link';
+      const tag = document.getElementById('new-tag').value;
+
+      if (!dest) {
+        showToast('Please specify a destination URL', 'warning');
+        return;
+      }
+
+      const newLink = {
+        id: Date.now(),
+        slug: slug,
+        title: title,
+        dest: dest,
+        clicks: 1,
+        tag: tag,
+        status: 'active',
+        date: new Date().toISOString().slice(0, 10)
+      };
+
+      linksData.unshift(newLink);
+      try {
+        localStorage.setItem('linkcraft_links_data', JSON.stringify(linksData));
+      } catch (e) {}
+      renderLinksTable();
+      closeModal('modal-shorten');
+      copyToClipboard(`https://kip.to/${slug}`);
+      showToast(`Link created & copied: https://kip.to/${slug}`, 'success');
+
+      // Clear inputs
+      document.getElementById('new-dest-url').value = '';
+      document.getElementById('new-slug').value = '';
+      document.getElementById('new-title').value = '';
+    }
+
+    // ==========================================
+    // QR CODE RENDERING & MODAL
+    // ==========================================
+    let currentQRTarget = 'https://kip.to/launch';
+    function openQRModal(url, title) {
+      currentQRTarget = url;
+      document.getElementById('qr-modal-title').innerText = `QR: ${title}`;
+      document.getElementById('qr-modal-url').innerText = url;
+
+      const container = document.getElementById('qrcode-container');
+      container.innerHTML = '';
+      if (typeof QRCode !== 'undefined') {
+        new QRCode(container, {
+          text: url,
+          width: 170,
+          height: 170,
+          colorDark: "#0369A1",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H
+        });
+      }
+      openModal('modal-qr');
+    }
+
+    function downloadQRCodePNG() {
+      const canvas = document.querySelector('#qrcode-container canvas');
+      if (canvas) {
+        const link = document.createElement('a');
+        link.download = 'linkcraft-qr-code.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        showToast('QR Code image downloaded (PNG)', 'success');
+      } else {
+        showToast('QR canvas generated', 'info');
+      }
+    }
+
+    function copyQRLink() {
+      copyToClipboard(currentQRTarget);
+    }
+
+    // ==========================================
+    // BIO-PAGE BUILDER & SMARTPHONE LIVE PREVIEW
+    // ==========================================
+    function renderBioButtonsEditor() {
+      const container = document.getElementById('bio-buttons-editor-list');
+      container.innerHTML = '';
+
+      bioButtons.forEach((b, idx) => {
+        const div = document.createElement('div');
+        div.className = 'p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 flex items-center justify-between gap-2';
+        div.innerHTML = `
+          <div class="flex-1 space-y-1">
+            <input type="text" value="${b.label}" oninput="updateBioButtonLabel(${b.id}, this.value)" class="w-full text-xs font-semibold rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-1 text-slate-800 dark:text-slate-200">
+            <input type="url" value="${b.url}" oninput="updateBioButtonUrl(${b.id}, this.value)" class="w-full text-[11px] font-mono text-slate-500 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-1">
+          </div>
+          <button onclick="removeBioButton(${b.id})" class="text-slate-400 hover:text-rose-500 p-1" title="Delete Button">
+            <i class="fa-regular fa-trash-can text-xs"></i>
+          </button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function updateBioButtonLabel(id, val) {
+      const b = bioButtons.find(x => x.id === id);
+      if (b) { b.label = val; updateBioPreview(); }
+    }
+
+    function updateBioButtonUrl(id, val) {
+      const b = bioButtons.find(x => x.id === id);
+      if (b) { b.url = val; updateBioPreview(); }
+    }
+
+    function addNewBioButton() {
+      bioButtons.push({
+        id: Date.now(),
+        label: '✨ Custom Campaign Link',
+        url: 'https://kiptecnologia.com.br'
+      });
+      renderBioButtonsEditor();
+      updateBioPreview();
+      showToast('New button added to bio editor', 'success');
+    }
+
+    function removeBioButton(id) {
+      bioButtons = bioButtons.filter(x => x.id !== id);
+      renderBioButtonsEditor();
+      updateBioPreview();
+      showToast('Button removed from bio page', 'warning');
+    }
+
+    function setBioTheme(themeName) {
+      currentBioTheme = themeName;
+      document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('border-sky-600'));
+      const activeCard = document.getElementById(`theme-card-${themeName}`);
+      if (activeCard) activeCard.classList.add('border-sky-600');
+
+      updateBioPreview();
+      showToast(`Bio Theme changed to ${themeName}`, 'info');
+    }
+
+    function updateBioPreview() {
+      const name = document.getElementById('bio-name-input').value;
+      const slug = document.getElementById('bio-slug-input').value;
+      const headline = document.getElementById('bio-headline-input').value;
+
+      document.getElementById('phone-display-name').querySelector('span').innerText = name;
+      document.getElementById('phone-slug').innerText = `@${slug}`;
+      document.getElementById('phone-headline').innerText = headline;
+
+      // Phone screen theme styling
+      const screen = document.getElementById('phone-screen');
+      if (currentBioTheme === 'clean-light') {
+        screen.className = 'w-full h-full pt-10 pb-6 px-4 overflow-y-auto custom-scroll flex flex-col items-center text-center bg-slate-50 text-slate-800 transition-colors duration-300';
+      } else if (currentBioTheme === 'carbon-slate') {
+        screen.className = 'w-full h-full pt-10 pb-6 px-4 overflow-y-auto custom-scroll flex flex-col items-center text-center bg-[#0F172A] text-white transition-colors duration-300';
+      } else if (currentBioTheme === 'sunset-violet') {
+        screen.className = 'w-full h-full pt-10 pb-6 px-4 overflow-y-auto custom-scroll flex flex-col items-center text-center bg-gradient-to-b from-[#2E1065] to-[#4C1D95] text-white transition-colors duration-300';
+      } else if (currentBioTheme === 'emerald-minimal') {
+        screen.className = 'w-full h-full pt-10 pb-6 px-4 overflow-y-auto custom-scroll flex flex-col items-center text-center bg-[#064E3B] text-emerald-50 transition-colors duration-300';
+      }
+
+      // Render buttons inside phone
+      const phoneButtonsList = document.getElementById('phone-buttons-list');
+      phoneButtonsList.innerHTML = '';
+      bioButtons.forEach(b => {
+        const btn = document.createElement('a');
+        btn.href = b.url;
+        btn.target = '_blank';
+        
+        let btnClass = 'block w-full py-2.5 px-3 rounded-xl text-xs font-semibold shadow-sm transition hover:scale-[1.02] transform ';
+        if (currentBioTheme === 'clean-light') {
+          btnClass += 'bg-white border border-slate-200 text-slate-800 hover:bg-slate-50';
+        } else if (currentBioTheme === 'carbon-slate') {
+          btnClass += 'bg-slate-800/90 border border-slate-700 text-white hover:bg-slate-800';
+        } else if (currentBioTheme === 'sunset-violet') {
+          btnClass += 'bg-white/10 backdrop-blur border border-purple-400/30 text-white hover:bg-white/20';
+        } else if (currentBioTheme === 'emerald-minimal') {
+          btnClass += 'bg-emerald-900 border border-emerald-700 text-emerald-100 hover:bg-emerald-800';
+        }
+
+        btn.className = btnClass;
+        btn.innerText = b.label;
+        btn.onclick = (e) => {
+          showToast(`Clicked: ${b.label}`, 'info');
+        };
+        phoneButtonsList.appendChild(btn);
+      });
+    }
+
+    function saveBioPageConfig() {
+      const slug = document.getElementById('bio-slug-input').value.trim() || 'kiptecnologia';
+      const name = document.getElementById('bio-name-input').value.trim() || 'Kip Tecnologia';
+      const headline = document.getElementById('bio-headline-input').value.trim();
+
+      const config = {
+        name: name,
+        slug: slug,
+        headline: headline,
+        theme: currentBioTheme,
+        buttons: bioButtons,
+        socials: {
+          x: document.getElementById('social-x-input')?.value || '@kiptecnologia',
+          github: document.getElementById('social-github-input')?.value || 'KipTecnologia',
+          youtube: document.getElementById('social-youtube-input')?.value || '@kiptecnologia',
+          linkedin: 'kiptecnologia'
+        }
+      };
+
+      try {
+        localStorage.setItem('linkcraft_bio_config', JSON.stringify(config));
+      } catch (e) {
+        console.warn('LocalStorage error:', e);
+      }
+
+      showToast(`Página salva! Acesse bio.html para ver as alterações em tempo real`, 'success');
+    }
+
+    function copyBioPageURL() {
+      const slug = document.getElementById('bio-slug-input').value.trim() || 'kiptecnologia';
+      const liveUrl = window.location.origin + window.location.pathname.replace('index.html', '') + 'bio.html';
+      copyToClipboard(liveUrl);
+    }
+
+    // ==========================================
+    // TEAM & RBAC LOGIC
+    // ==========================================
+    function renderTeamTable(items = teamData) {
+      const tbody = document.getElementById('team-table-body');
+      tbody.innerHTML = '';
+
+      items.forEach(m => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition';
+        tr.innerHTML = `
+          <td class="py-3 px-4">
+            <div class="font-bold text-slate-900 dark:text-white">${m.name}</div>
+            <div class="text-[11px] text-slate-400">${m.email}</div>
+          </td>
+          <td class="py-3 px-4 font-semibold text-sky-600 dark:text-sky-400">
+            ${m.role}
+          </td>
+          <td class="py-3 px-4 font-mono">
+            ${m.links} links
+          </td>
+          <td class="py-3 px-4 text-slate-400">
+            ${m.lastActive}
+          </td>
+          <td class="py-3 px-4 text-center">
+            ${m.has2FA 
+              ? '<span class="text-emerald-500 font-bold text-[11px]"><i class="fa-solid fa-shield-check mr-1"></i> Enabled</span>' 
+              : '<span class="text-amber-500 font-bold text-[11px]">Pending</span>'}
+          </td>
+          <td class="py-3 px-4 text-right">
+            <button onclick="removeTeamMember(${m.id})" class="text-slate-400 hover:text-rose-500 text-xs p-1" title="Remove Member">
+              <i class="fa-solid fa-user-xmark"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function searchTeamTable() {
+      const q = document.getElementById('member-search-input').value.toLowerCase();
+      const filtered = teamData.filter(m => m.name.toLowerCase().includes(q) || m.email.toLowerCase().includes(q));
+      renderTeamTable(filtered);
+    }
+
+    function openInviteModal() {
+      openModal('modal-invite');
+    }
+
+    function submitInviteMember() {
+      const email = document.getElementById('invite-email').value.trim();
+      const name = document.getElementById('invite-name').value.trim() || email.split('@')[0];
+      const role = document.getElementById('invite-role').value;
+
+      if (!email) {
+        showToast('Please provide an email address', 'warning');
+        return;
+      }
+
+      teamData.push({
+        id: Date.now(),
+        name: name,
+        email: email,
+        role: role,
+        links: 0,
+        lastActive: 'Just invited',
+        has2FA: false
+      });
+
+      renderTeamTable();
+      closeModal('modal-invite');
+      showToast(`Invitation dispatched to ${email} as ${role}`, 'success');
+      document.getElementById('invite-email').value = '';
+      document.getElementById('invite-name').value = '';
+    }
+
+    function removeTeamMember(id) {
+      teamData = teamData.filter(m => m.id !== id);
+      renderTeamTable();
+      showToast('Collaborator removed from workspace', 'warning');
+    }
+
+    // ==========================================
+    // AUDIT LOG TABLE & FILTERS
+    // ==========================================
+    function renderAuditTable(items = auditData) {
+      const tbody = document.getElementById('audit-table-body');
+      tbody.innerHTML = '';
+
+      items.forEach(a => {
+        let badgeColor = 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300';
+        if (a.severity === 'SECURITY') badgeColor = 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300';
+        if (a.severity === 'WARNING') badgeColor = 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300';
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition';
+        tr.innerHTML = `
+          <td class="py-2.5 px-4 font-mono font-bold text-slate-900 dark:text-white text-[11px]">${a.action}</td>
+          <td class="py-2.5 px-4 font-semibold">${a.actor}</td>
+          <td class="py-2.5 px-4 font-mono text-slate-400 text-[11px]">${a.ip}</td>
+          <td class="py-2.5 px-4 text-slate-600 dark:text-slate-300 font-mono text-[11px]">${a.target}</td>
+          <td class="py-2.5 px-4 text-center">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${badgeColor}">${a.severity}</span>
+          </td>
+          <td class="py-2.5 px-4 text-right text-slate-400 font-mono text-[11px]">${a.time}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterAuditLogs() {
+      const sev = document.getElementById('audit-severity-filter').value;
+      if (sev === 'ALL') {
+        renderAuditTable(auditData);
+      } else {
+        renderAuditTable(auditData.filter(a => a.severity === sev));
+      }
+    }
+
+    // ==========================================
+    // STRIPE SIMULATION & EXPORTS
+    // ==========================================
+    function downloadReceipt(invId, amount) {
+      const receiptContent = `=====================================\nKIP TECNOLOGIA - COMMERCIAL RECEIPT\n=====================================\nInvoice ID: ${invId}\nDate: ${new Date().toLocaleDateString()}\nService: LinkCraft Pro Subscription (1 Month)\nAmount Paid: $${amount.toFixed(2)} USD\nPayment Provider: Stripe Inc.\nCustomer: contato@kiptecnologia.com.br\nStatus: FULLY_SETTLED_PAID\n=====================================\nThank you for choosing Kip Tecnologia!`;
+      
+      const blob = new Blob([receiptContent], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `${invId}-receipt.txt`;
+      link.click();
+      showToast(`Receipt for ${invId} downloaded successfully`, 'success');
+    }
+
+    function simulateUpgradeEnterprise() {
+      showToast('Stripe Checkout Session initialized for Enterprise ($79/mo)', 'success');
+    }
+
+    function simulateDowngrade() {
+      showToast('Subscription updated to Starter Tier ($9/mo)', 'info');
+    }
+
+    function openChangeCardModal() {
+      showToast('Stripe Customer Portal opened for updating Payment Card', 'info');
+    }
+
+    function openCancelModal() {
+      showToast('Stripe Customer Billing Portal opened', 'warning');
+    }
+
+    // ==========================================
+    // EXPORTS: CSV & JSON
+    // ==========================================
+    function exportLinksCSV() {
+      let csv = 'ID,Slug,Title,DestinationURL,Clicks,Tag,Status,CreatedDate\n';
+      linksData.forEach(l => {
+        csv += `${l.id},${l.slug},"${l.title}","${l.dest}",${l.clicks},${l.tag},${l.status},${l.date}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `linkcraft-links-export-${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      showToast('Links dataset exported as CSV', 'success');
+    }
+
+    function exportTeamCSV() {
+      let csv = 'ID,Name,Email,Role,LinksManaged,LastActive,Has2FA\n';
+      teamData.forEach(m => {
+        csv += `${m.id},"${m.name}","${m.email}","${m.role}",${m.links},"${m.lastActive}",${m.has2FA}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `linkcraft-team-export.csv`;
+      a.click();
+      showToast('Team members exported as CSV', 'success');
+    }
+
+    function exportAuditJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(auditData, null, 2));
+      const a = document.createElement('a');
+      a.href = dataStr;
+      a.download = `linkcraft-audit-logs-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      showToast('Audit log records exported as JSON', 'success');
+    }
+
+    // ==========================================
+    // SETTINGS, API KEYS & WEBHOOKS
+    // ==========================================
+    function toggleKeyVisibility() {
+      const input = document.getElementById('api-key-input');
+      const icon = document.getElementById('key-eye-icon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fa-solid fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fa-solid fa-eye';
+      }
+    }
+
+    function copyAPIKey() {
+      const key = document.getElementById('api-key-input').value;
+      copyToClipboard(key);
+    }
+
+    function regenerateAPIKey() {
+      const newKey = 'lk_live_' + Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b => b.toString(16).padStart(2, '0')).join('');
+      document.getElementById('api-key-input').value = newKey;
+      showToast('New Live API Key generated successfully', 'warning');
+    }
+
+    function saveDomainConfig() {
+      const dom = document.getElementById('primary-domain-input').value;
+      showToast(`Custom domain updated to "${dom}" and SSL verification requested`, 'success');
+    }
+
+    function sendTestWebhookPing() {
+      const url = document.getElementById('webhook-url-input').value;
+      showToast(`Dispatched test event "link.click" (HTTP 200 OK) to ${url}`, 'success');
+    }
+
+    // ==========================================
+    // CHART TIMEFRAME UPDATES
+    // ==========================================
+    function updateChartPeriod(period) {
+      document.querySelectorAll('.chart-period-btn').forEach(b => {
+        b.classList.remove('bg-white', 'dark:bg-slate-700', 'text-sky-600', 'dark:text-sky-400', 'shadow-sm', 'font-bold');
+        b.classList.add('font-medium', 'text-slate-600', 'dark:text-slate-300');
+      });
+      const activeBtn = document.getElementById(`btn-period-${period}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-white', 'dark:bg-slate-700', 'text-sky-600', 'dark:text-sky-400', 'shadow-sm', 'font-bold');
+      }
+
+      const pathLine = document.getElementById('chart-line');
+      const pathArea = document.getElementById('chart-area');
+      const axis = document.getElementById('chart-axis-labels');
+
+      if (period === '7D') {
+        pathLine.setAttribute('d', 'M 0,140 Q 200,80 400,100 T 700,50 T 900,20');
+        pathArea.setAttribute('d', 'M 0,140 Q 200,80 400,100 T 700,50 T 900,20 L 900,190 L 0,190 Z');
+        axis.innerHTML = '<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Today</span>';
+      } else if (period === '30D') {
+        pathLine.setAttribute('d', 'M 0,160 Q 150,110 300,120 T 600,60 T 900,30');
+        pathArea.setAttribute('d', 'M 0,160 Q 150,110 300,120 T 600,60 T 900,30 L 900,190 L 0,190 Z');
+        axis.innerHTML = '<span>Day 1</span><span>Day 8</span><span>Day 15</span><span>Day 22</span><span>Today</span>';
+      } else if (period === '90D') {
+        pathLine.setAttribute('d', 'M 0,170 Q 250,130 500,80 T 750,40 T 900,15');
+        pathArea.setAttribute('d', 'M 0,170 Q 250,130 500,80 T 750,40 T 900,15 L 900,190 L 0,190 Z');
+        axis.innerHTML = '<span>Sep</span><span>Oct</span><span>Nov</span>';
+      } else if (period === '12M') {
+        pathLine.setAttribute('d', 'M 0,180 Q 200,150 450,110 T 700,60 T 900,10');
+        pathArea.setAttribute('d', 'M 0,180 Q 200,150 450,110 T 700,60 T 900,10 L 900,190 L 0,190 Z');
+        axis.innerHTML = '<span>Jan</span><span>Apr</span><span>Jul</span><span>Oct</span><span>Dec</span>';
+      }
+      showToast(`Chart filtered to ${period}`, 'info');
+    }
+
+    // ==========================================
+    // UTILITIES & MODAL CONTROLS
+    // ==========================================
+    function copyToClipboard(text) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text);
+        showToast(`Copied to clipboard: ${text}`, 'success');
+      } else {
+        showToast(`Selected text: ${text}`, 'info');
+      }
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function closeAllModals() {
+      document.querySelectorAll('.fixed.inset-0').forEach(m => m.classList.add('hidden'));
+    }
+
+    function openShortenModal() {
+      openModal('modal-shorten');
+    }
+
+    function openCmdPalette() {
+      openModal('modal-cmd');
+      setTimeout(() => document.getElementById('cmd-input').focus(), 50);
+    }
+
+    function filterCmdPalette() {
+      const q = document.getElementById('cmd-input').value.toLowerCase();
+      document.querySelectorAll('.cmd-item').forEach(item => {
+        item.style.display = item.innerText.toLowerCase().includes(q) ? 'flex' : 'none';
+      });
+    }
+
+    function cmdJump(tab) {
+      switchTab(tab);
+    }
+
+    function toggleWorkspaceDropdown() {
+      document.getElementById('workspace-dropdown').classList.toggle('hidden');
+    }
+
+    function changeWorkspace(name) {
+      document.getElementById('current-workspace-name').innerText = name;
+      document.getElementById('workspace-dropdown').classList.add('hidden');
+      showToast(`Active Workspace set to "${name}"`, 'success');
+    }
+
+    function openNewWorkspaceModal() {
+      document.getElementById('workspace-dropdown').classList.add('hidden');
+      showToast('Opening modal to provision new multi-tenant workspace', 'info');
+    }
+
+    function toggleProfileDropdown() {
+      document.getElementById('profile-dropdown').classList.toggle('hidden');
+    }
+
+    // Close dropdowns on outside click
+    window.addEventListener('click', (e) => {
+      const wsBtn = document.getElementById('workspace-btn');
+      const wsDrop = document.getElementById('workspace-dropdown');
+      if (wsBtn && wsDrop && !wsBtn.contains(e.target) && !wsDrop.contains(e.target)) {
+        wsDrop.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
