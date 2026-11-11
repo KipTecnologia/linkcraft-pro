@@ -8,9 +8,8 @@
   <meta name="description" content="Página pública de links oficiais da Kip Tecnologia gerada com LinkCraft Pro v2.0.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="tailwind.min.js"></script>
+  <link rel="stylesheet" href="all.min.css">
 
   <style>
     body {
@@ -22,6 +21,22 @@
     }
     .custom-scale:hover {
       transform: translateY(-2px) scale(1.01);
+    }
+    .theme-clean-light {
+      background-color: #f8fafc !important;
+      color: #1e293b !important;
+    }
+    .theme-carbon-slate {
+      background-color: #0B0F19 !important;
+      color: #ffffff !important;
+    }
+    .theme-sunset-violet {
+      background: linear-gradient(180deg, #1E1135 0%, #2E1065 50%, #4C1D95 100%) !important;
+      color: #ffffff !important;
+    }
+    .theme-emerald-minimal {
+      background-color: #022c22 !important;
+      color: #ecfdf5 !important;
     }
   </style>
 </head>
@@ -114,7 +129,9 @@
         { id: 1, label: "🚀 Explore Nossos Boilerplates no GitHub", url: "https://github.com/KipTecnologia" },
         { id: 2, label: "📦 Compre o Bundle Comercial 5-em-1 ($99)", url: "https://kiptecnologia.gumroad.com/l/5-in-one" },
         { id: 3, label: "⚡ LinkCraft Pro v2.0 Source Code ($49)", url: "https://kiptecnologia.gumroad.com/l/linkcraft-pro" },
-        { id: 4, label: "💬 Falar com Suporte Executivo no WhatsApp", url: "https://wa.me/" }
+        { id: 4, label: "💬 Falar com Suporte Executivo no WhatsApp", url: "https://wa.me/" },
+        { id: 5, label: "📊 Documentação da API REST & Webhooks", url: "https://kiptecnologia.com.br/docs" },
+        { id: 6, label: "⭐ Avalie o Repositório Oficial no GitHub", url: "https://github.com/KipTecnologia/linkcraft-pro" }
       ]
     };
 
@@ -145,15 +162,17 @@
       // Theme styling
       const body = document.getElementById('bio-body');
       const theme = data.theme || 'clean-light';
+      body.classList.remove('theme-clean-light', 'theme-carbon-slate', 'theme-sunset-violet', 'theme-emerald-minimal');
+      body.classList.add(`theme-${theme}`);
 
       if (theme === 'clean-light') {
-        body.className = 'min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 transition-colors duration-300 bg-slate-50 text-slate-800';
+        body.className = 'theme-clean-light min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 transition-colors duration-300 bg-slate-50 text-slate-800';
       } else if (theme === 'carbon-slate') {
-        body.className = 'min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 transition-colors duration-300 bg-[#0B0F19] text-white';
+        body.className = 'theme-carbon-slate min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 transition-colors duration-300 bg-[#0B0F19] text-white';
       } else if (theme === 'sunset-violet') {
-        body.className = 'min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 transition-colors duration-300 bg-gradient-to-b from-[#1E1135] via-[#2E1065] to-[#4C1D95] text-white';
+        body.className = 'theme-sunset-violet min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 transition-colors duration-300 bg-gradient-to-b from-[#1E1135] via-[#2E1065] to-[#4C1D95] text-white';
       } else if (theme === 'emerald-minimal') {
-        body.className = 'min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 transition-colors duration-300 bg-[#022c22] text-emerald-50';
+        body.className = 'theme-emerald-minimal min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 transition-colors duration-300 bg-[#022c22] text-emerald-50';
       }
 
       // Render buttons

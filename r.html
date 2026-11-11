@@ -7,9 +7,8 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="tailwind.min.js"></script>
+  <link rel="stylesheet" href="all.min.css">
 
   <style>
     body { font-family: 'Inter', sans-serif; }
@@ -119,10 +118,12 @@
         localStorage.setItem('linkcraft_clicks_telemetry', JSON.stringify(clicks));
       } catch (e) {}
 
-      // Auto redirect after 1.5 seconds
-      setTimeout(() => {
-        window.location.href = dest;
-      }, 1500);
+      // Auto redirect after 1.5 seconds unless preview/noredirect
+      if (urlParams.get('noredirect') !== '1') {
+        setTimeout(() => {
+          window.location.href = dest;
+        }, 1500);
+      }
     }
 
     document.addEventListener('DOMContentLoaded', executeRedirect);
